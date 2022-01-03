@@ -1,7 +1,7 @@
 package com.jdm.menunenaw.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.jdm.menunenaw.R
 
 class MainActivity : AppCompatActivity() {
