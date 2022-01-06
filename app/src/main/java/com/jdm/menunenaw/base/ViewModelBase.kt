@@ -1,4 +1,4 @@
-package com.jdm.garam.base
+package com.jdm.menunenaw.base
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

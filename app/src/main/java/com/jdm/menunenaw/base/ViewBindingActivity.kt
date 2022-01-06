@@ -1,4 +1,4 @@
-package com.jdm.garam.base
+package com.jdm.menunenaw.base
 
 import android.os.Bundle
 import androidx.annotation.LayoutRes

@@ -1,11 +1,11 @@
-package com.jdm.garam.base
+package com.jdm.menunenaw.base
 
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.jdm.garam.IProgressDialog
-import com.jdm.garam.ProgressDialog
+import com.jdm.menunenaw.common.progressdialog.IProgressDialog
+import com.jdm.menunenaw.common.progressdialog.ProgressDialog
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.common.appbar.BaseAppBar
 import io.reactivex.rxjava3.disposables.CompositeDisposable
