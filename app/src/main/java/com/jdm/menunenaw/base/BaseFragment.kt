@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
-import com.jdm.garam.IProgressDialog
-import com.jdm.garam.ProgressDialog
+import com.jdm.menunenaw.common.progressdialog.IProgressDialog
+import com.jdm.menunenaw.common.progressdialog.ProgressDialog
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 
 open class BaseFragment : Fragment(), IProgressDialog {

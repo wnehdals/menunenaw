@@ -1,4 +1,4 @@
-package com.jdm.garam
+package com.jdm.menunenaw.common.progressdialog
 
 interface IProgressDialog {
     fun showProgressDialog()
