@@ -1,8 +1,6 @@
 package com.jdm.menunenaw.ui.main
 
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.jdm.garam.base.ViewBindingActivity
+import com.jdm.menunenaw.base.ViewBindingActivity
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.databinding.ActivityMainBinding
 
