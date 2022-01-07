@@ -1,4 +1,4 @@
-package com.jdm.garam.base
+package com.jdm.menunenaw.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,19 +15,6 @@ open class BaseFragment : Fragment(), IProgressDialog {
     private var progressDialog: ProgressDialog? = null
     protected lateinit var callBack: OnBackPressedCallback
     protected var backPressedTime: Long = 0
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
 
 
     override fun showProgressDialog() {
