@@ -11,5 +11,5 @@
     <string name="location_search_recent">최근 검색한 주소</string>
 
     <string name="map_bound_title">범위 지정</string>
-
+    <string name="map_bound_next">다음 단계</string>
 </resources>

@@ -17,7 +17,40 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintTop_toTopOf="parent"
+
             app:layout_constraintDimensionRatio="1" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:ellipsize="end"
+            app:layout_constraintTop_toBottomOf="@id/ll_map_bound_map_container"
+            app:layout_constraintBottom_toTopOf="@id/sb_map_bound_bar"/>
+
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/sb_map_bound_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginHorizontal="@dimen/dp_30"
+            android:progressDrawable="@drawable/seekbar_background_8a96ff_foreground_5c6295"
+            android:thumb="@drawable/oval_fill_5c6295"
+            android:splitTrack="false"
+            android:max="5"
+            app:layout_constraintTop_toBottomOf="@id/ll_map_bound_map_container"
+            app:layout_constraintBottom_toTopOf="@id/bt_map_bound_next"
+            app:layout_constraintVertical_bias="0.35" />
+
+        <Button
+            android:id="@+id/bt_map_bound_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/rect_radius_16_8a96ff"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:text="@string/map_bound_next"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
