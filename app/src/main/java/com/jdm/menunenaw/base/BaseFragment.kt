@@ -13,7 +13,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 open class BaseFragment : Fragment(), IProgressDialog {
     protected val compositeDisposable = CompositeDisposable()
     private var progressDialog: ProgressDialog? = null
-    protected lateinit var callBack: OnBackPressedCallback
+    protected var callBack: OnBackPressedCallback? = null
     protected var backPressedTime: Long = 0
 
     override fun onCreateView(
@@ -48,7 +48,7 @@ open class BaseFragment : Fragment(), IProgressDialog {
     }
 
     override fun onDetach() {
-        callBack.remove()
+        callBack?.remove()
         super.onDetach()
     }
 

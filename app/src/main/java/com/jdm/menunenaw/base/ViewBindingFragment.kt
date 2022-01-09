@@ -9,13 +9,14 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Exception
 
 abstract class ViewBindingFragment<T : ViewDataBinding> : BaseFragment() {
     @get:LayoutRes
     abstract val layoutId: Int
-    private lateinit var _binding: T
-    val binding: T
+    private  var _binding: T? = null
+    val binding: T?
         get() = _binding
 
     override fun onCreateView(
@@ -24,8 +25,8 @@ abstract class ViewBindingFragment<T : ViewDataBinding> : BaseFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
-        _binding.lifecycleOwner = this
-        return binding.root
+        _binding!!.lifecycleOwner = this
+        return binding!!.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,7 +49,7 @@ abstract class ViewBindingFragment<T : ViewDataBinding> : BaseFragment() {
     }
 
     override fun onDestroy() {
-        binding.unbind()
+        binding?.unbind()
         super.onDestroy()
     }
 }

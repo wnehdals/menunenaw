@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <data>
+        <variable
+            name="fragment"
+            type="com.jdm.menunenaw.ui.main.MainFragment" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -74,6 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_130"
                 android:background="@drawable/rect_radius_16_8a96ff"
+                android:onClick="@{()->fragment.onClickOfFoodRoulette()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
