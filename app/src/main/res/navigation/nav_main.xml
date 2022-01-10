@@ -8,6 +8,36 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.jdm.menunenaw.ui.main.MainFragment"
-        android:label="MainFragment"
-        tools:layout="@layout/fragment_main" />
+        android:label=""
+        tools:layout="@layout/fragment_main" >
+
+        <action
+            android:id="@+id/action_mainFragment_to_locationSearchFragment"
+            app:destination="@id/locationSearchFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left_minus_50"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left_minus_50"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/locationSearchFragment"
+        android:name="com.jdm.menunenaw.ui.location.LocationSearchFragment"
+        android:label="@string/location_search_title"
+        tools:layout="@layout/fragment_location_search" >
+
+        <action
+            android:id="@+id/action_locationSearchFragment_to_mapBoundFragment"
+            app:destination="@id/mapBoundFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left_minus_50"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_left_minus_50" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapBoundFragment"
+        android:name="com.jdm.menunenaw.ui.location.MapBoundFragment"
+        android:label="@string/map_bound_title"
+        tools:layout="@layout/fragment_map_bound" />
 </navigation>
