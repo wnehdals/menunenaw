@@ -24,7 +24,7 @@ class RouletteView @JvmOverloads constructor(
 
     private val mSpinnerWheel: SpinnerWheel by lazy { SpinnerWheel(
         context = context,
-        dataList = listOf("떡볶이", "탕수육", "라면", "돼지국밥", "케이크", "세상에서제일맛있는집")
+        dataList = listOf("떡볶이", "탕수육", "라면", "돼지국밥", "케이크", "세상에서제일맛있는집", "돈까스", "육포", "미역국")
     ) }
 
     init {

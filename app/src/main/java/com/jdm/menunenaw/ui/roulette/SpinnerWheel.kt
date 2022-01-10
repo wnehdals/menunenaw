@@ -25,7 +25,7 @@ class SpinnerWheel (
 ) : View(context) {
 
     private val DEFAULT_PADDING = 20
-    private val CENTER_DOT_SIZE = 20
+    private val CENTER_DOT_SIZE = 150
 
     private val rouletteSize
         get() = dataList.size
@@ -177,7 +177,7 @@ class SpinnerWheel (
     /**가운데 중심 작은 원 그리는 함수 */
     private fun drawCenterDot(canvas: Canvas, rectF: RectF) {
         fillPaint.color = ContextCompat.getColor(context, R.color.spinner_wheel_stroke)
-        canvas.drawArc(rectF, 0f, 360f, false, strokePaint)
+        canvas.drawArc(rectF, 0f, 360f, false, fillPaint)
     }
 
 }
