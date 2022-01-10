@@ -1,4 +1,4 @@
-package com.jdm.garam
+package com.jdm.menunenaw.common.progressdialog
 
 import android.app.AlertDialog
 import android.content.Context
