@@ -79,7 +79,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_130"
                 android:background="@drawable/rect_radius_16_8a96ff"
-                android:onClick="@{()->fragment.onClickOfFoodRoulette()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -130,6 +129,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_130"
                 android:background="@drawable/rect_radius_16_fea0a0"
+                android:onClick="@{()->fragment.onClickOfRestaurantRoulette()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
