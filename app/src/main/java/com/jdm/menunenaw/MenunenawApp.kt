@@ -13,11 +13,10 @@ class MenunenawApp: Application() {
     val appContext: Context = this
     val isApplicationDebug
         get() = isApplicationDebug(appContext)
-    lateinit var kakaoAppKey: String
+
     override fun onCreate() {
         super.onCreate()
         instance = this
-        kakaoAppKey = this.resources.getString(R.string.KAKAO_HEADER_KEY)
     }
     /**
      * 디버그모드인지 확인하는 함수

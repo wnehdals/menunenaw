@@ -13,7 +13,7 @@ class MainFragment : ViewBindingFragment<FragmentMainBinding>() {
 
     override fun initView() {
         super.initView()
-        binding?.fragment = this
+        binding.fragment = this
     }
 
     override fun subscribe() {

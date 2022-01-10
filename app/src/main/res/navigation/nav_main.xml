@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.jdm.menunenaw.ui.main.MainFragment"
-        android:label="MainFragment"
+        android:label=""
         tools:layout="@layout/fragment_main" >
 
         <action

@@ -36,18 +36,7 @@ object NetworkModule {
             HttpLoggingInterceptor.Level.HEADERS
         }
     }
-    @AUTH
-    @Provides
-    @Singleton
-    fun provideAuthInterceptor(@ActivityContext context: Context): Interceptor {
-        return Interceptor { chain: Interceptor.Chain ->
 
-            val newRequest: Request = chain.request().newBuilder()
-                .addHeader("Authorization", "KakaoAK ${context.resources.getString(R.string.KAKAO_HEADER_KEY)}")
-                .build()
-            chain.proceed(newRequest)
-        }
-    }
 
     @AUTH
     @Provides

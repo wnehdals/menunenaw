@@ -7,7 +7,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.activityViewModels
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
-import com.jdm.menunenaw.data.BaseValue
+import com.jdm.menunenaw.data.BundleKey
 import com.jdm.menunenaw.data.remote.response.LocationSearchResponse
 import com.jdm.menunenaw.databinding.FragmentLocationSearchBinding
 import com.jdm.menunenaw.ui.adapter.LocationSearchListAdapter
@@ -27,7 +27,7 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
     private val locationSearchAdapter by lazy { LocationSearchListAdapter(itemClick = {item -> onClickOfLocationItem(item)}) }
 
     override fun initView() {
-        binding?.apply {
+        binding.apply {
             fragment = this@LocationSearchFragment
             tvLocationSearchResultList.adapter = locationSearchAdapter
             svLocationSearchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -45,7 +45,7 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
 
     override fun subscribe() {
         viewModel.searchResult.observe(this) { pair ->
-            binding?.run {
+            binding.run {
                 if (pair.first == MainViewModel.DataType.REMOTE) {
                     tvLocationSearchRecent.visibility = View.GONE
                     locationSearchAdapter.submitList(pair.second)
@@ -58,12 +58,12 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
 
     private fun onClickOfLocationItem(item : LocationSearchResponse.Document){
         Log.i(TAG,"onClickOfLocationItem : $item ")
-        binding?.let{ context?.controlSoftKeyboard(it.root,false) }
+        binding.let{ context?.controlSoftKeyboard(it.root,false) }
         moveFragment(R.id.action_locationSearchFragment_to_mapBoundFragment
             ,bundle = Bundle().apply {
-                putString(BaseValue.BundleKey.LOCATION_Y.name, item.y)
-                putString(BaseValue.BundleKey.LOCATION_X.name, item.x)
-                putString(BaseValue.BundleKey.LOCATION_NAME.name,item.address_name)
+                putString(BundleKey.LOCATION_Y.name, item.y)
+                putString(BundleKey.LOCATION_X.name, item.x)
+                putString(BundleKey.LOCATION_NAME.name,item.address_name)
             })
     }
 }

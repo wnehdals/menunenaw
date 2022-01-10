@@ -7,8 +7,8 @@ import androidx.databinding.ViewDataBinding
 
 abstract class ViewBindingActivity<T : ViewDataBinding> : ActivityBase() {
     @get:LayoutRes abstract  val layoutId: Int
-    private var _binding: T? = null
-    val binding: T?
+    private lateinit var _binding: T
+    val binding: T
         get() = _binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,7 +19,7 @@ abstract class ViewBindingActivity<T : ViewDataBinding> : ActivityBase() {
 
     override fun onDestroy() {
         super.onDestroy()
-        binding?.unbind()
+        binding.unbind()
     }
 
     open fun initView() = Unit

@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
-import com.jdm.menunenaw.data.BaseValue
+import com.jdm.menunenaw.data.BundleKey
 import com.jdm.menunenaw.databinding.FragmentMapBoundBinding
 import dagger.hilt.android.AndroidEntryPoint
 import net.daum.mf.map.api.MapCircle
@@ -41,11 +41,11 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
 
     override fun initView() {
         super.initView()
-        binding?.apply {
+        binding.apply {
             llMapBoundMapContainer.addView(mapView,ViewGroup.LayoutParams.MATCH_PARENT)
-            val y = arguments?.getString(BaseValue.BundleKey.LOCATION_Y.name)?.toDouble()
+            val y = arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()
                 ?: DEFAULT_LATITUDE
-            val x = arguments?.getString(BaseValue.BundleKey.LOCATION_X.name)?.toDouble()
+            val x = arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()
                 ?: DEFAULT_LONGITUDE
 
             Log.i(TAG, "latitude : $y, longitude : $x ")
@@ -154,7 +154,6 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         }
 
         override fun onDraggablePOIItemMoved(mapView: MapView?, poiItem: MapPOIItem?, mapPoint: MapPoint?) {
-
             Log.i(TAG,"poiItemEventListener onDraggablePOIItemMoved : ${poiItem?.tag}")
             mapPoint?.let{ setCircle(it) }
         }
