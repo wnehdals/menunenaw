@@ -9,4 +9,6 @@
     <string name="food_roulette">음식돌림판</string>
     <string name="store_roulette">식당돌림판</string>
 
+    <string name="roulette_button_text">돌려돌려 돌림판</string>
+
 </resources>

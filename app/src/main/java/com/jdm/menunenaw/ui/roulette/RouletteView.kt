@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.databinding.LayoutRouletteViewBinding
 
@@ -28,7 +29,9 @@ class RouletteView @JvmOverloads constructor(
 
     init {
         binding.constraintLayout.addView(mSpinnerWheel)
-        mSpinnerWheel.rotateRoulette(2000f, 5000)
     }
 
+    fun startRoulette(mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
+        mSpinnerWheel.rotateRoulette((1000..2000).random().toFloat(), 5000, mutableLiveData, endAction)
+    }
 }

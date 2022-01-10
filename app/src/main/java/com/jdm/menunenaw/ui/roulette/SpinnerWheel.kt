@@ -10,6 +10,14 @@ import androidx.core.content.ContextCompat
 import com.jdm.menunenaw.R
 import kotlin.math.cos
 import kotlin.math.sin
+import android.animation.ObjectAnimator
+
+import android.R.string.no
+import android.animation.Animator
+import android.util.Log
+import androidx.core.animation.addPauseListener
+import androidx.lifecycle.MutableLiveData
+
 
 class SpinnerWheel (
     context: Context,
@@ -21,6 +29,9 @@ class SpinnerWheel (
 
     private val rouletteSize
         get() = dataList.size
+
+    private val sweepAngle
+        get() = 360f / rouletteSize.toFloat()
 
     private var centerX = 0f
     private var centerY = 0f
@@ -61,12 +72,43 @@ class SpinnerWheel (
         }
     }
 
+    var mFromDegrees = 0f
+    var mToDegrees = 0f
+
     /** 룰렛 돌리기*/
-    fun rotateRoulette(toDegrees: Float, duration: Long) {
-        val rotateAnim = RotateAnimation( 0f, toDegrees, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f )
+    fun rotateRoulette(toDegrees: Float, duration: Long, mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
+        mToDegrees += toDegrees
+        val rotateAnim: ObjectAnimator = ObjectAnimator.ofFloat(
+            this,
+            View.ROTATION,
+            mFromDegrees,
+            mToDegrees
+        )
         rotateAnim.duration = duration
-        rotateAnim.fillAfter = true
-        startAnimation(rotateAnim)
+
+        mFromDegrees = mToDegrees
+        rotateAnim.addUpdateListener {
+            // 현재 가리키고 있는 대상 계산
+            (it.animatedValue as? Float)?.let { value ->
+                mutableLiveData.postValue(calCurrentItem(value).second)
+            }
+        }
+        val animListener = object : Animator.AnimatorListener {
+            override fun onAnimationStart(p0: Animator?) {}
+            override fun onAnimationEnd(p0: Animator?) { // 종료됐을 때 호출
+                endAction.invoke(calCurrentItem(mFromDegrees).first)
+            }
+            override fun onAnimationCancel(p0: Animator?) {}
+            override fun onAnimationRepeat(p0: Animator?) {}
+        }
+        rotateAnim.addListener(animListener)
+        rotateAnim.start()
+    }
+
+    private fun calCurrentItem(currentDegree: Float) : Pair<Int, String> {
+        val simpleDegree = (currentDegree  + 90) % 360 // 270도 지점부터 그려짐
+        val index = rouletteSize-1 - (((simpleDegree / sweepAngle).toInt()) % rouletteSize)
+        return Pair(index, dataList[index])
     }
 
     @SuppressLint("DrawAllocation")
@@ -94,7 +136,6 @@ class SpinnerWheel (
         canvas.drawArc(rectF, 0f, 360f, false, strokePaint)
 
         if (rouletteSize in 2..10) {
-            val sweepAngle = 360f / rouletteSize.toFloat()
             val radius = (rectF.right - rectF.left) / 2 * 0.68
 
             // 내부 부채꼴 그리기
