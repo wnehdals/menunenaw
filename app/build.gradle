@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     compileSdk 31
@@ -15,6 +17,8 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
+        resValue("string", "KAKAO_HEADER_KEY", properties.getProperty("kakao_header_key"))
+        manifestPlaceholders = [kakao_app_key: "${properties.getProperty('kakao_app_key')}"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
