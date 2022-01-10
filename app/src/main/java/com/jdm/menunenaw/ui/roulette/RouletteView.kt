@@ -21,13 +21,14 @@ class RouletteView @JvmOverloads constructor(
         true
     )
 
+    private val mSpinnerWheel: SpinnerWheel by lazy { SpinnerWheel(
+        context = context,
+        dataList = listOf("떡볶이", "탕수육", "라면", "돼지국밥", "케이크", "세상에서제일맛있는집")
+    ) }
+
     init {
-        binding.constraintLayout.addView(
-            SpinnerWheel(
-                context = context,
-                dataList = listOf("떡볶이", "탕수육", "순대", "튀김", "라면", "돼지국밥", "육회", "케이크", "세상에서제일맛있는집")
-            )
-        )
+        binding.constraintLayout.addView(mSpinnerWheel)
+        mSpinnerWheel.rotateRoulette(2000f, 5000)
     }
 
 }

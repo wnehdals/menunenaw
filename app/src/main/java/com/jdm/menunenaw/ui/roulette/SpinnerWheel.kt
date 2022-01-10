@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.view.View
+import android.view.animation.Animation
+import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
 import com.jdm.menunenaw.R
 import kotlin.math.cos
@@ -57,6 +59,14 @@ class SpinnerWheel (
             color = Color.BLACK
             textAlign = Paint.Align.CENTER
         }
+    }
+
+    /** 룰렛 돌리기*/
+    fun rotateRoulette(toDegrees: Float, duration: Long) {
+        val rotateAnim = RotateAnimation( 0f, toDegrees, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f )
+        rotateAnim.duration = duration
+        rotateAnim.fillAfter = true
+        startAnimation(rotateAnim)
     }
 
     @SuppressLint("DrawAllocation")
