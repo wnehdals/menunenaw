@@ -4,18 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.view.View
-import android.view.animation.Animation
-import android.view.animation.RotateAnimation
 import androidx.core.content.ContextCompat
 import com.jdm.menunenaw.R
 import kotlin.math.cos
 import kotlin.math.sin
 import android.animation.ObjectAnimator
-
-import android.R.string.no
 import android.animation.Animator
-import android.util.Log
-import androidx.core.animation.addPauseListener
 import androidx.lifecycle.MutableLiveData
 
 
@@ -136,34 +130,34 @@ class SpinnerWheel (
         canvas.drawArc(rectF, 0f, 360f, false, strokePaint)
 
         if (rouletteSize in 2..10) {
-            val radius = (rectF.right - rectF.left) / 2 * 0.68
-
+            val textRectF = RectF(rectF.left + 140, rectF.top + 140, rectF.right - 140, rectF.bottom - 140)
             // 내부 부채꼴 그리기
             for (i in 0 until rouletteSize) {
                 fillPaint.color = ContextCompat.getColor(context, fillColorIds[i % fillColorIds.size])
                 val startAngle = if (i == 0) 0f else sweepAngle * i
                 canvas.drawArc(rectF, startAngle, sweepAngle, true, fillPaint)
 
-                val medianAngle = (startAngle + sweepAngle / 2f) * Math.PI / 180f
-                val x = (centerX + (radius * cos(medianAngle))).toFloat()
-                val y = (centerY + (radius * sin(medianAngle))).toFloat() + DEFAULT_PADDING
                 var text = dataList[i]
                 textPaint.textSize = when (text.length) {
-                    in 0..3 -> 50f
-                    in 4..5 -> 45f
+                    in 0..3 -> 60f
+                    in 4..5 -> 55f
                     else -> {
                         text = text.substring(0, 5) + ".."
-                        35f
+                        45f
                     }
                 }
-                canvas.drawText(text, x, y, textPaint)
+
+                // 텍스트 넣기
+                val path = Path()
+                path.addArc(textRectF, startAngle, sweepAngle)
+                canvas.drawTextOnPath(text, path, 0f, 0f, textPaint)
             }
 
             // 내부 구분선 그리기
             val r = rectF.width() / 2
             for (i in 0 until rouletteSize) {
-               val startAngle = if (i == 0) 0f else sweepAngle * i * (Math.PI / 180)
-                 canvas.drawLine(rectF.centerX(),
+                val startAngle = if (i == 0) 0f else sweepAngle * i * (Math.PI / 180)
+                canvas.drawLine(rectF.centerX(),
                     rectF.centerY(),
                     centerX + (r * cos(startAngle.toDouble()).toFloat()),
                     centerY + r * sin(startAngle.toDouble()).toFloat(),
