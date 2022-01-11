@@ -5,4 +5,11 @@
     <string name="food_roulette">음식돌림판</string>
     <string name="store_roulette">식당돌림판</string>
 
+    <string name="location_search_title">주소 검색</string>
+    <string name="location_search_search_bar_hint">지번,도로명,건물명으로 검색</string>
+    <string name="location_search_current_pos">현재 위치로 설정</string>
+    <string name="location_search_recent">최근 검색한 주소</string>
+
+    <string name="map_bound_title">범위 지정</string>
+    <string name="map_bound_next">다음 단계</string>
 </resources>

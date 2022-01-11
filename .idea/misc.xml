@@ -8,6 +8,8 @@
         <entry key="app/src/main/res/drawable/ic_chevron_left.xml" value="0.17777777777777778" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1828774062816616" />
         <entry key="app/src/main/res/layout/base_appbar.xml" value="0.1828774062816616" />
+        <entry key="app/src/main/res/layout/fragment_location_search.xml" value="0.1828774062816616" />
+        <entry key="app/src/main/res/layout/item_location_search.xml" value="0.1828774062816616" />
         <entry key="app/src/main/res/layout/layout_progressbar.xml" value="0.1828774062816616" />
       </map>
     </option>
