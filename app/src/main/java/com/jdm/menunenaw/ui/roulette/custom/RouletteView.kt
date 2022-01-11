@@ -1,14 +1,18 @@
-package com.jdm.menunenaw.ui.roulette
+package com.jdm.menunenaw.ui.roulette.custom
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.databinding.LayoutRouletteViewBinding
+import kotlin.math.abs
 
+@SuppressLint("ClickableViewAccessibility")
 class RouletteView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -29,9 +33,28 @@ class RouletteView @JvmOverloads constructor(
 
     init {
         binding.constraintLayout.addView(mSpinnerWheel)
+        setOnSwipeListener()
     }
 
-    fun startRoulette(mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
-        mSpinnerWheel.rotateRoulette((1000..2000).random().toFloat(), 5000, mutableLiveData, endAction)
+    fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
+        mSpinnerWheel.setOnRouletteResultListener(mutableLiveData, endAction)
+    }
+
+    fun startRouletteRotation(toDegrees: Float = (1000..2000).random().toFloat()) {
+        mSpinnerWheel.rotateRoulette(toDegrees, 5000)
+    }
+
+    private fun setOnSwipeListener() {
+        mSpinnerWheel.setOnTouchListener(RouletteTouchListener(context, object: RouletteSwipeListener {
+            override fun onSwipeToLeft(diff: Float) {
+                Log.i("eunjin", "onSwipeToLeft $diff")
+                startRouletteRotation(abs(diff))
+            }
+
+            override fun onSwipeToRight(diff: Float) {
+                 Log.i("eunjin", "onSwipeToRight $diff")
+                startRouletteRotation(abs(diff))
+            }
+        }))
     }
 }

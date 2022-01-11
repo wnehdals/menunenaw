@@ -1,4 +1,4 @@
-package com.jdm.menunenaw.ui.roulette
+package com.jdm.menunenaw.ui.roulette.custom
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -66,11 +66,20 @@ class SpinnerWheel (
         }
     }
 
-    var mFromDegrees = 0f
-    var mToDegrees = 0f
+    private var mFromDegrees = 0f
+    private var mToDegrees = 0f
+
+    private var mMutableLiveData: MutableLiveData<String>? = null
+    private var mEndAction: ((Int) -> Unit)? = null
+
+    /** 결과 리스너 등록*/
+    fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
+        mMutableLiveData = mutableLiveData
+        mEndAction = endAction
+    }
 
     /** 룰렛 돌리기*/
-    fun rotateRoulette(toDegrees: Float, duration: Long, mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
+    fun rotateRoulette(toDegrees: Float, duration: Long) {
         mToDegrees += toDegrees
         val rotateAnim: ObjectAnimator = ObjectAnimator.ofFloat(
             this,
@@ -84,13 +93,13 @@ class SpinnerWheel (
         rotateAnim.addUpdateListener {
             // 현재 가리키고 있는 대상 계산
             (it.animatedValue as? Float)?.let { value ->
-                mutableLiveData.postValue(calCurrentItem(value).second)
+                mMutableLiveData?.postValue(calCurrentItem(value).second)
             }
         }
         val animListener = object : Animator.AnimatorListener {
             override fun onAnimationStart(p0: Animator?) {}
             override fun onAnimationEnd(p0: Animator?) { // 종료됐을 때 호출
-                endAction.invoke(calCurrentItem(mFromDegrees).first)
+                mEndAction?.invoke(calCurrentItem(mFromDegrees).first)
             }
             override fun onAnimationCancel(p0: Animator?) {}
             override fun onAnimationRepeat(p0: Animator?) {}

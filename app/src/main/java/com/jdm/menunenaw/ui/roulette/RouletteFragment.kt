@@ -2,13 +2,14 @@ package com.jdm.menunenaw.ui.roulette
 
 
 import android.util.Log
-import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.databinding.FragmentRouletteBinding
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
+import android.os.Build
+
+import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 
 class RouletteFragment: ViewBindingFragment<FragmentRouletteBinding>() {
@@ -26,16 +27,25 @@ class RouletteFragment: ViewBindingFragment<FragmentRouletteBinding>() {
     private val mutableLiveData = MutableLiveData<String>()
 
     override fun initView() {
-        binding.button.setOnClickListener { rouletteView.startRoulette(mutableLiveData) {
-            Log.i("eunjin", "result $it")
+        binding.button.setOnClickListener {
+            rouletteView.startRouletteRotation()
         }
-            initRouletteBottomMargin()
+        initRouletteBottomMargin()
+        rouletteView.setOnRouletteResultListener(mutableLiveData) {
+            Log.i("eunjin", "result $it")
         }
     }
 
     /** rouletteView 의 width/2 만큼 Bottom Margin 설정 */
     private fun initRouletteBottomMargin() {
-        val params: ConstraintLayout.LayoutParams = rouletteView.layoutParams as  ConstraintLayout.LayoutParams
-        params.setMargins(0, 0, 0, -(rouletteView.width/2))
+        rouletteView.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                rouletteView.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                // get width and height of the view
+                val params: ConstraintLayout.LayoutParams = rouletteView.layoutParams as  ConstraintLayout.LayoutParams
+                params.setMargins(0, 0, 0, -(rouletteView.width/2))
+                rouletteView.layoutParams = params
+            }
+        })
     }
 }
