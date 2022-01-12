@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="fragment"
+            type="com.jdm.menunenaw.ui.location.MapBoundFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,6 +27,7 @@
             android:layout_height="0dp"
             android:gravity="center"
             android:ellipsize="end"
+            android:text="@{fragment.locationName}"
             app:layout_constraintTop_toBottomOf="@id/ll_map_bound_map_container"
             app:layout_constraintBottom_toTopOf="@id/sb_map_bound_bar"/>
 

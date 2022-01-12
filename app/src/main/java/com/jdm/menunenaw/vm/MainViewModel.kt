@@ -13,8 +13,8 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewModelBase(){
     private val TAG = MainViewModel::class.java.simpleName
-    val queryFlow : MutableStateFlow<String> = MutableStateFlow("")
 
+    val queryFlow : MutableStateFlow<String> = MutableStateFlow("")
     val searchResult = queryFlow
         .debounce(SEARCH_DELAY_MILLIS)
         .mapLatest {
@@ -29,6 +29,7 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
         .catch {}
         .flowOn(Dispatchers.IO)
         .asLiveData()
+
 
     init {
 
