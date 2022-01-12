@@ -1,5 +1,6 @@
 package com.jdm.menunenaw.ui.location
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -22,6 +23,7 @@ import com.jdm.menunenaw.data.remote.response.LocationSearchResponse
 import com.jdm.menunenaw.databinding.FragmentLocationSearchBinding
 import com.jdm.menunenaw.ui.adapter.LocationSearchListAdapter
 import com.jdm.menunenaw.utils.GPSListener
+import com.jdm.menunenaw.utils.checkPermissionsAndRequest
 import com.jdm.menunenaw.utils.controlSoftKeyboard
 import com.jdm.menunenaw.vm.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,6 +75,8 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
 
         }
 
+    /** 반드시 Permission 허용 상태일때만 수행 */
+    @SuppressLint("MissingPermission")
     private fun setLocationManager() {
         locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
@@ -93,20 +97,20 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
         return isGPSEnabled() || isNetworkEnabled()
     }
 
+
     override fun initView() {
         gpsListener.onReceiveLocation = this::recieveLocation
         if (!isEnableLocationSensor()) {
             enableLocationSensorSettings()
         }
 
-        if (hasPermissions(requireContext(), permissions)) {
+        if(context?.checkPermissionsAndRequest(permissions,requestMultiplePermissionLauncher) == true ){
+            @SuppressLint("MissingPermission")
             viewModel.location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
             if (viewModel.location != null) {
                 //가장 마지막에 저장한 위치값
             }
             setLocationManager()
-        } else {
-            requestPermissions()
         }
 
         binding.apply {
@@ -149,15 +153,6 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
                 putString(BundleKey.LOCATION_NAME.name, item.address_name)
             })
     }
-
-    private fun requestPermissions() {
-        requestMultiplePermissionLauncher.launch(permissions)
-    }
-
-    private fun hasPermissions(context: Context, permissions: Array<String>): Boolean =
-        permissions.all {
-            ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
-        }
 
     private fun enableLocationSensorSettings() {
         Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS).run { startActivity(this) }

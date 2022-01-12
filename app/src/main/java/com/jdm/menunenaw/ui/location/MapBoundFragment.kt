@@ -62,7 +62,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     }
 
     private fun setSeekbarUpdate(){
-        binding?.sbMapBoundBar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+        binding.sbMapBoundBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 setCircleSize(p1 * SEEK_BAR_MOUNT + DEFAULT_CIRCLE_RADIUS)
             }

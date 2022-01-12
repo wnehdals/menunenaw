@@ -16,8 +16,8 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewModelBase(){
     private val TAG = MainViewModel::class.java.simpleName
     val queryFlow : MutableStateFlow<String> = MutableStateFlow("")
-초
-    val locationRequestTimeInterval = (1000 * 10).toLong() // 10
+
+    val locationRequestTimeInterval = (1000 * 10).toLong() // 10초
     val locationRequestDistanceInterval = 10.0f // 10 meters
 
     var location: Location? = null
