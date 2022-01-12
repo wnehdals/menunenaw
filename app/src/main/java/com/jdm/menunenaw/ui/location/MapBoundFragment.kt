@@ -11,7 +11,6 @@ import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.data.BundleKey
 import com.jdm.menunenaw.databinding.FragmentMapBoundBinding
 import com.jdm.menunenaw.vm.MainViewModel
-import com.jdm.menunenaw.vm.MainViewModel_Factory
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -54,16 +53,11 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
 
     override fun initView() {
         super.initView()
+        setInitData()
         binding.apply {
             fragment = this@MapBoundFragment
             lifecycleOwner = this@MapBoundFragment
-
             llMapBoundMapContainer.addView(mapView,ViewGroup.LayoutParams.MATCH_PARENT)
-            locationLatitude = arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()
-                ?: DEFAULT_LATITUDE
-            locationLongitude = arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()
-                ?: DEFAULT_LONGITUDE
-            locationName.value = arguments?.getString(BundleKey.LOCATION_NAME.name) ?: ""
 
             Log.i(TAG, "latitude : ${locationLatitude}, longitude : ${locationLongitude} ")
             val mapPoint = MapPoint.mapPointWithGeoCoord(locationLatitude, locationLongitude)
@@ -76,6 +70,17 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
 
     override fun subscribe() {
 
+    }
+
+    private fun setInitData(){
+        locationLatitude = arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()
+            ?: DEFAULT_LATITUDE
+        locationLongitude = arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()
+            ?: DEFAULT_LONGITUDE
+        locationName.value = arguments?.getString(BundleKey.LOCATION_NAME.name) ?: ""
+        if(locationName.value?.isEmpty() == true){
+            moveLocation(locationLatitude,locationLongitude)
+        }
     }
 
     private fun setSeekbarUpdate(){
@@ -113,8 +118,12 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         mapView.addCircle(circle)
     }
 
-    private fun movePosition(){
-
+    private fun moveLocation(latitude: Double, longitude: Double) {
+        locationLatitude = latitude
+        locationLongitude = longitude
+        viewModel.getLocationInfo(locationLatitude, locationLongitude){
+            locationName.postValue(it)
+        }
     }
 
     private val mapViewEvent = object :MapView.MapViewEventListener{
@@ -178,6 +187,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
             Log.i(TAG,"poiItemEventListener onDraggablePOIItemMoved : ${poiItem?.tag}")
             mapPoint?.let{
                 setCircle(it)
+                moveLocation(mapPoint.mapPointGeoCoord.latitude,mapPoint.mapPointGeoCoord.longitude)
             }
         }
     }

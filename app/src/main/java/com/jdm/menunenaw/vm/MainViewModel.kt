@@ -1,6 +1,7 @@
 package com.jdm.menunenaw.vm
 
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.jdm.menunenaw.base.ViewModelBase
 import com.jdm.menunenaw.data.remote.repository.KaKaoRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,11 +31,25 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
         .flowOn(Dispatchers.IO)
         .asLiveData()
 
-
     init {
 
     }
 
+    fun getLocationInfo(latitude : Double, longitude : Double, complete : (String) -> Unit){
+        try{
+            viewModelScope.launch {
+                withContext(Dispatchers.IO){
+                    kakaoRepo.getLocationInfo(latitude.toString(),longitude.toString()).let{
+                        if(it.documents.isNotEmpty()){
+                            complete(it.documents[0].address.address_name)
+                        }
+                    }
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
 
     enum class DataType{
         REMOTE,
