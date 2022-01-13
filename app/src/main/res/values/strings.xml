@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">Menunenaw</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="menunena">메뉴내놔</string>
     <string name="solve_decide_menu">선택장애를 해결해줄게</string>
     <string name="food_roulette">음식돌림판</string>
     <string name="store_roulette">식당돌림판</string>
 
+    <string name="roulette_button_text">돌려돌려 돌림판</string>
+    
     <string name="location_search_title">주소 검색</string>
     <string name="location_search_search_bar_hint">지번,도로명,건물명으로 검색</string>
     <string name="location_search_current_pos">현재 위치로 설정</string>

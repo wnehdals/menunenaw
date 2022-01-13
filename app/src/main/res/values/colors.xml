@@ -7,6 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="spinner_wheel_stroke">#554234</color>
+    <color name="spinner_wheel_fill_1">#E6AA5D</color>
+    <color name="spinner_wheel_fill_2">#EAA19A</color>
+    <color name="spinner_wheel_fill_3">#B69ECC</color>
+    <color name="spinner_wheel_fill_4">#A5BFE2</color>
+    <color name="spinner_wheel_fill_5">#B9D575</color>
+    <color name="spinner_wheel_fill_6">#F0D162</color>
+
     <color name="c_8A96FF">#FF8A96FF</color>
     <color name="c_5C6295">#FF5C6295</color>
     <color name="c_FEA0A0">#FFFEA0A0</color>

@@ -16,19 +16,6 @@ open class BaseFragment : Fragment(), IProgressDialog {
     protected var callBack: OnBackPressedCallback? = null
     protected var backPressedTime: Long = 0
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return super.onCreateView(inflater, container, savedInstanceState)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-
 
     override fun showProgressDialog() {
         progressDialog?.dismiss()
