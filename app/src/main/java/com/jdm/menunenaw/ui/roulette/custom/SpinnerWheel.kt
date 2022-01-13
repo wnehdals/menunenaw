@@ -15,7 +15,7 @@ import androidx.lifecycle.MutableLiveData
 
 class SpinnerWheel (
     context: Context,
-    private val dataList: List<String>
+    var dataList: List<String>
 ) : View(context) {
 
     private val DEFAULT_PADDING = 20
@@ -72,6 +72,8 @@ class SpinnerWheel (
     private var mMutableLiveData: MutableLiveData<String>? = null
     private var mEndAction: ((Int) -> Unit)? = null
 
+    private var isRotating = false
+
     /** 결과 리스너 등록*/
     fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
         mMutableLiveData = mutableLiveData
@@ -80,32 +82,36 @@ class SpinnerWheel (
 
     /** 룰렛 돌리기*/
     fun rotateRoulette(toDegrees: Float, duration: Long) {
-        mToDegrees += toDegrees
-        val rotateAnim: ObjectAnimator = ObjectAnimator.ofFloat(
-            this,
-            View.ROTATION,
-            mFromDegrees,
-            mToDegrees
-        )
-        rotateAnim.duration = duration
+        if (!isRotating) {
+            isRotating = true
+            mToDegrees += toDegrees
+            val rotateAnim: ObjectAnimator = ObjectAnimator.ofFloat(
+                this,
+                View.ROTATION,
+                mFromDegrees,
+                mToDegrees
+            )
+            rotateAnim.duration = duration
 
-        mFromDegrees = mToDegrees
-        rotateAnim.addUpdateListener {
-            // 현재 가리키고 있는 대상 계산
-            (it.animatedValue as? Float)?.let { value ->
-                mMutableLiveData?.postValue(calCurrentItem(value).second)
+            mFromDegrees = mToDegrees
+            rotateAnim.addUpdateListener {
+                // 현재 가리키고 있는 대상 계산
+                (it.animatedValue as? Float)?.let { value ->
+                    mMutableLiveData?.postValue(calCurrentItem(value).second)
+                }
             }
-        }
-        val animListener = object : Animator.AnimatorListener {
-            override fun onAnimationStart(p0: Animator?) {}
-            override fun onAnimationEnd(p0: Animator?) { // 종료됐을 때 호출
-                mEndAction?.invoke(calCurrentItem(mFromDegrees).first)
+            val animListener = object : Animator.AnimatorListener {
+                override fun onAnimationStart(p0: Animator?) {}
+                override fun onAnimationEnd(p0: Animator?) { // 종료됐을 때 호출
+                    mEndAction?.invoke(calCurrentItem(mFromDegrees).first)
+                    isRotating = false
+                }
+                override fun onAnimationCancel(p0: Animator?) {}
+                override fun onAnimationRepeat(p0: Animator?) {}
             }
-            override fun onAnimationCancel(p0: Animator?) {}
-            override fun onAnimationRepeat(p0: Animator?) {}
+            rotateAnim.addListener(animListener)
+            rotateAnim.start()
         }
-        rotateAnim.addListener(animListener)
-        rotateAnim.start()
     }
 
     private fun calCurrentItem(currentDegree: Float) : Pair<Int, String> {
@@ -138,7 +144,7 @@ class SpinnerWheel (
         // 테두리 그리기
         canvas.drawArc(rectF, 0f, 360f, false, strokePaint)
 
-        if (rouletteSize in 2..10) {
+        if (rouletteSize in 3..10) {
             val textRectF = RectF(rectF.left + 140, rectF.top + 140, rectF.right - 140, rectF.bottom - 140)
             // 내부 부채꼴 그리기
             for (i in 0 until rouletteSize) {

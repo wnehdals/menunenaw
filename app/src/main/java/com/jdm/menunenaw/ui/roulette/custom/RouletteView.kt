@@ -2,6 +2,7 @@ package com.jdm.menunenaw.ui.roulette.custom
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Parcelable
 import android.util.AttributeSet
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.MutableLiveData
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.databinding.LayoutRouletteViewBinding
+import java.util.ArrayList
 import kotlin.math.abs
 
 @SuppressLint("ClickableViewAccessibility")
@@ -28,7 +30,7 @@ class RouletteView @JvmOverloads constructor(
 
     private val mSpinnerWheel: SpinnerWheel by lazy { SpinnerWheel(
         context = context,
-        dataList = listOf("떡볶이", "탕수육", "라면", "돼지국밥", "케이크", "세상에서제일맛있는집", "돈까스", "육포", "미역국")
+        dataList = listOf<String>()
     ) }
 
     init {
@@ -40,8 +42,12 @@ class RouletteView @JvmOverloads constructor(
         mSpinnerWheel.setOnRouletteResultListener(mutableLiveData, endAction)
     }
 
+    fun setRouletteData(list: List<String>) {
+        mSpinnerWheel.dataList = list
+    }
+
     fun startRouletteRotation(toDegrees: Float = (1000..2000).random().toFloat()) {
-        mSpinnerWheel.rotateRoulette(toDegrees, 5000)
+        mSpinnerWheel.rotateRoulette(toDegrees, 3000)
     }
 
     private fun setOnSwipeListener() {

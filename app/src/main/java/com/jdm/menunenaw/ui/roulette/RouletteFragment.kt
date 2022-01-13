@@ -7,12 +7,15 @@ import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.databinding.FragmentRouletteBinding
 import androidx.constraintlayout.widget.ConstraintLayout
-import android.os.Build
 
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
 
 
 class RouletteFragment: ViewBindingFragment<FragmentRouletteBinding>() {
+
+    companion object {
+        val BUNDLE_DATA_ROULETTE_LIST = "rouletteList"
+    }
 
     override val layoutId = R.layout.fragment_roulette
 
@@ -30,7 +33,14 @@ class RouletteFragment: ViewBindingFragment<FragmentRouletteBinding>() {
         binding.button.setOnClickListener {
             rouletteView.startRouletteRotation()
         }
+        initRouletteView()
+    }
+
+    private fun initRouletteView() {
         initRouletteBottomMargin()
+        rouletteView.setRouletteData(
+            arguments?.getStringArrayList(BUNDLE_DATA_ROULETTE_LIST)?.toList() ?: listOf("데이터는", "최소", "3개")
+        )
         rouletteView.setOnRouletteResultListener(mutableLiveData) {
             Log.i("eunjin", "result $it")
         }

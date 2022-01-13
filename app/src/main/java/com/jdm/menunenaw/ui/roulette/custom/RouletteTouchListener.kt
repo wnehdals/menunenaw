@@ -28,32 +28,30 @@ class RouletteTouchListener(context: Context, rouletteSwipeListener: RouletteSwi
             return true
         }
 
-        override fun onSingleTapConfirmed(e: MotionEvent?): Boolean {
-            return super.onSingleTapConfirmed(e)
-        }
-
         override fun onFling(
             e1: MotionEvent?,
             e2: MotionEvent?,
             velocityX: Float,
             velocityY: Float
         ): Boolean {
-            var result = false
             try {
                 val diffY = e2!!.y - e1!!.y
                 val diffX = e2.x - e1.x
                 if (abs(diffX) > SWIPE_THRESHOLD && abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {
-                    if (diffX > 0) {
-                        rouletteSwipeListener.onSwipeToRight(diffX)
-                    } else {
-                        rouletteSwipeListener.onSwipeToLeft(diffX)
+                    if (diffX * velocityX > 0) {
+                        val result = if (diffX > 0) {
+                            diffX + (diffX * velocityX / 4000)
+                        } else {
+                            -1 * diffX + (diffX * velocityX / 4000)
+                        }
+                        rouletteSwipeListener.onSwipeToRight(result)
+                        return true
                     }
-                    result = true
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-            return result
+            return false
         }
     }
 }
