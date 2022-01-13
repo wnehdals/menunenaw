@@ -1,9 +1,12 @@
 package com.jdm.menunenaw.vm
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.jdm.menunenaw.base.ViewModelBase
 import com.jdm.menunenaw.data.remote.repository.KaKaoRepo
+import com.jdm.menunenaw.data.remote.response.CategorySearchResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
@@ -31,10 +34,14 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
         .flowOn(Dispatchers.IO)
         .asLiveData()
 
+    private val _searchCategoryResult : MutableLiveData<List<CategorySearchResponse.Document>> = MutableLiveData()
+    private val searchCategoryResult : LiveData<List<CategorySearchResponse.Document>> = _searchCategoryResult
+
     init {
 
     }
 
+    /* 위도, 경도로 주소 찾기 */
     fun getLocationInfo(latitude : Double, longitude : Double, complete : (String) -> Unit){
         try{
             viewModelScope.launch {
@@ -43,6 +50,21 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
                         if(it.documents.isNotEmpty()){
                             complete(it.documents[0].address.address_name)
                         }
+                    }
+                }
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+    }
+
+    /* 근처 음식점 개수 */
+    fun getSearchCategoryCount(latitude : Double, longitude : Double, radius:Int, complete: (Int) -> Unit){
+        try{
+            viewModelScope.launch {
+                withContext(Dispatchers.IO){
+                    kakaoRepo.getSearchCategory(latitude.toString(), longitude.toString(), radius).let{
+                        complete(it.meta.total_count)
                     }
                 }
             }

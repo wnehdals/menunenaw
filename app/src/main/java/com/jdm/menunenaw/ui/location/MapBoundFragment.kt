@@ -28,6 +28,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private val DEFAULT_LONGITUDE = 127.0
     private val DEFAULT_CIRCLE_RADIUS = 150
     private val SEEK_BAR_MOUNT = 50
+    val SEEK_BAR_MAX = 5
 
     override val layoutId: Int = R.layout.fragment_map_bound
     private val viewModel : MainViewModel by activityViewModels()
@@ -50,6 +51,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private var locationLatitude = DEFAULT_LATITUDE
     private var locationLongitude = DEFAULT_LONGITUDE
     val locationName = MutableLiveData("")
+    val searchResult = MutableLiveData("")
 
     override fun initView() {
         super.initView()
@@ -64,6 +66,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
             mapView.setMapCenterPoint(mapPoint,false)
             setMarkerPos(mapPoint)
             setCircle(mapPoint)
+            searchCategory()
         }
         setSeekbarUpdate()
     }
@@ -87,6 +90,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         binding.sbMapBoundBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 setCircleSize(p1 * SEEK_BAR_MOUNT + DEFAULT_CIRCLE_RADIUS)
+                searchCategory()
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -123,6 +127,13 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         locationLongitude = longitude
         viewModel.getLocationInfo(locationLatitude, locationLongitude){
             locationName.postValue(it)
+        }
+    }
+
+    // 지정 범위 내 음식점 개수 가져오기
+    private fun searchCategory() {
+        viewModel.getSearchCategoryCount(locationLatitude, locationLongitude, circle.radius) {
+            searchResult.postValue(String.format("내위치로부터 %d개의 식당이 발견되었어요", it))
         }
     }
 
@@ -188,6 +199,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
             mapPoint?.let{
                 setCircle(it)
                 moveLocation(mapPoint.mapPointGeoCoord.latitude,mapPoint.mapPointGeoCoord.longitude)
+                searchCategory()
             }
         }
     }
