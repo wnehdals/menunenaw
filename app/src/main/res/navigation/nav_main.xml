@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_mainFragment_to_foodLargeCategoryFragment"
             app:destination="@id/foodLargeCategoryFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_rouletteFragment"
+            app:destination="@id/rouletteFragment" />
     </fragment>
 
     <fragment
@@ -48,4 +51,8 @@
         android:name="com.jdm.menunenaw.ui.category.FoodLargeCategoryFragment"
         android:label="@string/food_roulette"
         tools:layout="@layout/fragment_food_large_category"/>
+    <fragment
+        android:id="@+id/rouletteFragment"
+        android:name="com.jdm.menunenaw.ui.roulette.RouletteFragment"
+        android:label="RouletteFragment" />
 </navigation>
