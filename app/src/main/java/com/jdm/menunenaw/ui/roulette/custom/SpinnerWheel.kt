@@ -70,12 +70,12 @@ class SpinnerWheel (
     private var mToDegrees = 0f
 
     private var mMutableLiveData: MutableLiveData<String>? = null
-    private var mEndAction: ((Int) -> Unit)? = null
+    private var mEndAction: ((String) -> Unit)? = null
 
     private var isRotating = false
 
     /** 결과 리스너 등록*/
-    fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
+    fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (String) -> Unit) {
         mMutableLiveData = mutableLiveData
         mEndAction = endAction
     }
@@ -103,7 +103,7 @@ class SpinnerWheel (
             val animListener = object : Animator.AnimatorListener {
                 override fun onAnimationStart(p0: Animator?) {}
                 override fun onAnimationEnd(p0: Animator?) { // 종료됐을 때 호출
-                    mEndAction?.invoke(calCurrentItem(mFromDegrees).first)
+                    mEndAction?.invoke(calCurrentItem(mFromDegrees).second)
                     isRotating = false
                 }
                 override fun onAnimationCancel(p0: Animator?) {}

@@ -18,6 +18,9 @@
             app:exitAnim="@anim/slide_out_left_minus_50"
             app:popExitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left_minus_50"/>
+        <action
+            android:id="@+id/action_mainFragment_to_rouletteFragment"
+            app:destination="@id/rouletteFragment" />
     </fragment>
 
     <fragment
@@ -40,4 +43,8 @@
         android:name="com.jdm.menunenaw.ui.location.MapBoundFragment"
         android:label="@string/map_bound_title"
         tools:layout="@layout/fragment_map_bound" />
+    <fragment
+        android:id="@+id/rouletteFragment"
+        android:name="com.jdm.menunenaw.ui.roulette.RouletteFragment"
+        android:label="RouletteFragment" />
 </navigation>

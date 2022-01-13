@@ -38,7 +38,7 @@ class RouletteView @JvmOverloads constructor(
         setOnSwipeListener()
     }
 
-    fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (Int) -> Unit) {
+    fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (String) -> Unit) {
         mSpinnerWheel.setOnRouletteResultListener(mutableLiveData, endAction)
     }
 
