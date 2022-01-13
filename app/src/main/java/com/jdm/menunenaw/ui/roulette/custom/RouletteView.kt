@@ -38,8 +38,8 @@ class RouletteView @JvmOverloads constructor(
         setOnSwipeListener()
     }
 
-    fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (String) -> Unit) {
-        mSpinnerWheel.setOnRouletteResultListener(mutableLiveData, endAction)
+    fun setOnRouletteResultListener(rouletteListener: RouletteListener) {
+        mSpinnerWheel.setOnRouletteResultListener(rouletteListener)
     }
 
     fun setRouletteData(list: List<String>) {
@@ -52,13 +52,7 @@ class RouletteView @JvmOverloads constructor(
 
     private fun setOnSwipeListener() {
         mSpinnerWheel.setOnTouchListener(RouletteTouchListener(context, object: RouletteSwipeListener {
-            override fun onSwipeToLeft(diff: Float) {
-                Log.i("eunjin", "onSwipeToLeft $diff")
-                startRouletteRotation(abs(diff))
-            }
-
             override fun onSwipeToRight(diff: Float) {
-                 Log.i("eunjin", "onSwipeToRight $diff")
                 startRouletteRotation(abs(diff))
             }
         }))

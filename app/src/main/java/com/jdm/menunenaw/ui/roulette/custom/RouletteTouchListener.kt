@@ -7,7 +7,6 @@ import android.view.View
 import kotlin.math.abs
 
 interface RouletteSwipeListener {
-    fun onSwipeToLeft(diff: Float)
     fun onSwipeToRight(diff: Float)
 }
 

@@ -69,15 +69,13 @@ class SpinnerWheel (
     private var mFromDegrees = 0f
     private var mToDegrees = 0f
 
-    private var mMutableLiveData: MutableLiveData<String>? = null
-    private var mEndAction: ((String) -> Unit)? = null
+    private var mRouletteListener: RouletteListener? = null
 
     private var isRotating = false
 
     /** 결과 리스너 등록*/
-    fun setOnRouletteResultListener(mutableLiveData: MutableLiveData<String>, endAction: (String) -> Unit) {
-        mMutableLiveData = mutableLiveData
-        mEndAction = endAction
+    fun setOnRouletteResultListener(rouletteListener: RouletteListener) {
+        mRouletteListener = rouletteListener
     }
 
     /** 룰렛 돌리기*/
@@ -97,13 +95,13 @@ class SpinnerWheel (
             rotateAnim.addUpdateListener {
                 // 현재 가리키고 있는 대상 계산
                 (it.animatedValue as? Float)?.let { value ->
-                    mMutableLiveData?.postValue(calCurrentItem(value).second)
+                    mRouletteListener?.getRotatingResult(calCurrentItem(value).second)
                 }
             }
             val animListener = object : Animator.AnimatorListener {
                 override fun onAnimationStart(p0: Animator?) {}
                 override fun onAnimationEnd(p0: Animator?) { // 종료됐을 때 호출
-                    mEndAction?.invoke(calCurrentItem(mFromDegrees).second)
+                    mRouletteListener?.getRotateEndResult(calCurrentItem(mFromDegrees).second)
                     isRotating = false
                 }
                 override fun onAnimationCancel(p0: Animator?) {}
@@ -151,6 +149,7 @@ class SpinnerWheel (
                 fillPaint.color = ContextCompat.getColor(context, fillColorIds[i % fillColorIds.size])
                 val startAngle = if (i == 0) 0f else sweepAngle * i
                 canvas.drawArc(rectF, startAngle, sweepAngle, true, fillPaint)
+                canvas.drawArc(rectF, startAngle, sweepAngle, true, strokeArcPaint)
 
                 var text = dataList[i]
                 textPaint.textSize = when (text.length) {
@@ -161,23 +160,21 @@ class SpinnerWheel (
                         45f
                     }
                 }
-
                 // 텍스트 넣기
                 val path = Path()
                 path.addArc(textRectF, startAngle, sweepAngle)
                 canvas.drawTextOnPath(text, path, 0f, 0f, textPaint)
             }
-
-            // 내부 구분선 그리기
-            val r = rectF.width() / 2
-            for (i in 0 until rouletteSize) {
-                val startAngle = if (i == 0) 0f else sweepAngle * i * (Math.PI / 180)
-                canvas.drawLine(rectF.centerX(),
-                    rectF.centerY(),
-                    centerX + (r * cos(startAngle.toDouble()).toFloat()),
-                    centerY + r * sin(startAngle.toDouble()).toFloat(),
-                    strokeArcPaint)
-            }
+//            // 내부 구분선 그리기
+//            val r = rectF.width() / 2
+//            for (i in 0 until rouletteSize) {
+//                val startAngle = if (i == 0) 0f else sweepAngle * i * (Math.PI / 180)
+//                canvas.drawLine(rectF.centerX(),
+//                    rectF.centerY(),
+//                    centerX + (r * cos(startAngle.toDouble()).toFloat()),
+//                    centerY + r * sin(startAngle.toDouble()).toFloat(),
+//                    strokeArcPaint)
+//            }
         } else {
             throw IndexOutOfBoundsException("size out of roulette")
         }
