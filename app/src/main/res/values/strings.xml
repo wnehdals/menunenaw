@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">Menunenaw</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="menunena">메뉴내놔</string>
     <string name="solve_decide_menu">선택장애를 해결해줄게</string>
     <string name="food_roulette">음식돌림판</string>
     <string name="store_roulette">식당돌림판</string>
 
+    <string name="roulette_button_text">돌려돌려 돌림판</string>
+    
     <string name="location_search_title">주소 검색</string>
     <string name="location_search_search_bar_hint">지번,도로명,건물명으로 검색</string>
     <string name="location_search_current_pos">현재 위치로 설정</string>
@@ -15,4 +21,12 @@
     <string name="map_bound_my_location">내위치</string>
     <string name="map_bound_near_location">근처위치</string>
 
+    <string name="location_permission_no">위치정보 권환을 거부하셨습니다.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="food_large_cagegory_guid_message">돌림판에 추가할\n카테고리를 골라주세요</string>
+    <string name="enable_select_duplicated">중복선택이 가능해요</string>
+    <string name="korean_food">한식</string>
+    <string name="japanes_food">일식</string>
+    <string name="american_food">양식</string>
+    <string name="chinese_food">중식</string>
 </resources>

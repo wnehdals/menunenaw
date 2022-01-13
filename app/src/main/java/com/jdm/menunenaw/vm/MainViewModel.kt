@@ -2,6 +2,8 @@ package com.jdm.menunenaw.vm
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import android.location.Location
+import android.location.LocationManager
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.jdm.menunenaw.base.ViewModelBase
@@ -18,6 +20,10 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewModelBase(){
     private val TAG = MainViewModel::class.java.simpleName
 
+    val locationRequestTimeInterval = (1000 * 10).toLong() // 10초
+    val locationRequestDistanceInterval = 10.0f // 10 meters
+
+    var location: Location? = null
     val queryFlow : MutableStateFlow<String> = MutableStateFlow("")
     val searchResult = queryFlow
         .debounce(SEARCH_DELAY_MILLIS)
