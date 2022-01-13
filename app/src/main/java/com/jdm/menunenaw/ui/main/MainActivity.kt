@@ -12,6 +12,8 @@ import com.jdm.menunenaw.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.security.MessageDigest
 import android.content.pm.PackageInfo
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.ui.setupWithNavController
 import java.security.NoSuchAlgorithmException
 
@@ -21,15 +23,15 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
     private val TAG = MainActivity::class.java.simpleName
     override val layoutId: Int
         get() = R.layout.activity_main
-
+    var navController: NavController? = null
     override fun subscribe() {
 
     }
 
     override fun initView() {
+        navController = (supportFragmentManager.findFragmentById(R.id.fcv_nav_main_container) as NavHostFragment).navController
         setupToolbar()
     }
-
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun setupToolbar() {
         binding.tbMain.let { toolbar ->
@@ -41,4 +43,5 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
             supportActionBar?.title = ""
         }
     }
+
 }
