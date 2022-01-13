@@ -1,5 +1,6 @@
 package com.jdm.menunenaw.ui.main
 
+import android.view.View
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.databinding.FragmentMainBinding
@@ -22,5 +23,8 @@ class MainFragment : ViewBindingFragment<FragmentMainBinding>() {
 
     fun onClickOfRestaurantRoulette(){
         moveFragment(R.id.action_mainFragment_to_locationSearchFragment)
+    }
+    fun onClickOfFoodRoulette() {
+        moveFragment(R.id.action_mainFragment_to_foodLargeCategoryFragment)
     }
 }

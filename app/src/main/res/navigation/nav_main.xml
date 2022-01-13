@@ -18,6 +18,9 @@
             app:exitAnim="@anim/slide_out_left_minus_50"
             app:popExitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_left_minus_50"/>
+        <action
+            android:id="@+id/action_mainFragment_to_foodLargeCategoryFragment"
+            app:destination="@id/foodLargeCategoryFragment" />
     </fragment>
 
     <fragment
@@ -40,4 +43,9 @@
         android:name="com.jdm.menunenaw.ui.location.MapBoundFragment"
         android:label="@string/map_bound_title"
         tools:layout="@layout/fragment_map_bound" />
+    <fragment
+        android:id="@+id/foodLargeCategoryFragment"
+        android:name="com.jdm.menunenaw.ui.category.FoodLargeCategoryFragment"
+        android:label="@string/food_roulette"
+        tools:layout="@layout/fragment_food_large_category"/>
 </navigation>
