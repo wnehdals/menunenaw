@@ -5,6 +5,8 @@ plugins {
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
 
 android {
     compileSdk 31
@@ -15,6 +17,8 @@ android {
         targetSdk 31
         versionCode 1
         versionName "1.0"
+        resValue("string", "KAKAO_HEADER_KEY", properties.getProperty("kakao_header_key"))
+        manifestPlaceholders = [kakao_app_key: "${properties.getProperty('kakao_app_key')}"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -81,8 +85,8 @@ dependencies {
     //implementation "com.squareup.retrofit2:converter-simplexml:$retrofit_version"
 
     // Coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2'
 
     def lifecycle_version = "2.0.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
@@ -96,5 +100,8 @@ dependencies {
     androidTestImplementation "com.google.dagger:hilt-android-testing:$hiltCoreVersion"
     kaptAndroidTest "com.google.dagger:hilt-compiler:$hiltCoreVersion"
 
+    //Paging Library
+    implementation 'androidx.paging:paging-runtime-ktx:3.1.0'
 
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
