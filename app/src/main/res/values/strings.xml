@@ -18,6 +18,8 @@
 
     <string name="map_bound_title">범위 지정</string>
     <string name="map_bound_next">다음 단계</string>
+    <string name="map_bound_my_location">내위치</string>
+    <string name="map_bound_near_location">근처위치</string>
 
     <string name="location_permission_no">위치정보 권환을 거부하셨습니다.</string>
     <!-- TODO: Remove or change this placeholder text -->

@@ -1,8 +1,5 @@
 package com.jdm.menunenaw.data.remote.response
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
-
 data class LocationSearchResponse(
     val documents: List<Document>,
     val meta: Meta
