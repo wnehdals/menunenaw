@@ -6,3 +6,5 @@ enum class BundleKey {
     LOCATION_NAME,
     ROULETTE_DATA_LIST
 }
+
+const val MAX_STORE_COUNT = 45

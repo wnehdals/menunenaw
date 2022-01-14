@@ -53,7 +53,7 @@ interface KaKaoApi {
         @Query("radius") radius: Int,
         @Query("rect") rect: String = "",
         @Query("category_group_code") category: String = "FD6",
-        @Query("page ") page: Int = 1,
+        @Query("page") page: Int = 1,
         @Query("size") size: Int = 15,
         @Query("sort") sort: String = "accuracy"
     ): CategorySearchResponse

@@ -107,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_130"
                 android:background="@drawable/rect_radius_16_fea0a0"
-                android:onClick="@{()->fragment.onClickOfRestaurantRoulette()}"
+                android:onClick="@{()->fragment.onClickOfStoreRoulette()}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
