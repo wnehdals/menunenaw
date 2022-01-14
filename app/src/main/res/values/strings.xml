@@ -18,6 +18,15 @@
 
     <string name="map_bound_title">범위 지정</string>
     <string name="map_bound_next">다음 단계</string>
+    <string name="map_bound_my_location">내위치</string>
+    <string name="map_bound_near_location">근처위치</string>
 
     <string name="location_permission_no">위치정보 권환을 거부하셨습니다.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="food_large_cagegory_guid_message">돌림판에 추가할\n카테고리를 골라주세요</string>
+    <string name="enable_select_duplicated">중복선택이 가능해요</string>
+    <string name="korean_food">한식</string>
+    <string name="japanes_food">일식</string>
+    <string name="american_food">양식</string>
+    <string name="chinese_food">중식</string>
 </resources>

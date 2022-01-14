@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.category.FoodLargeCategoryFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/food_large_category_guid_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_30"
+                android:gravity="center"
+                android:text="@string/food_large_cagegory_guid_message"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_30"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/food_large_category_select_guid_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_16"
+                android:background="@drawable/rect_radius_24_grad_ff5673"
+                android:padding="@dimen/dp_16"
+                android:text="@string/enable_select_duplicated"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/food_large_category_guid_message" />
+
+            <ToggleButton
+                android:id="@+id/korean_food"
+                android:layout_width="@dimen/dp_154"
+                android:layout_height="@dimen/dp_154"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_24"
+                android:background="@drawable/selector_rect_radius_24_707070"
+                android:textColor="@color/black"
+                android:textOff="@string/korean_food"
+                android:textOn="@string/korean_food"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/food_large_category_select_guid_message" />
+
+            <ToggleButton
+                android:id="@+id/japanese_food"
+                android:layout_width="@dimen/dp_154"
+                android:layout_height="@dimen/dp_154"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:background="@drawable/selector_rect_radius_24_707070"
+                android:textColor="@color/black"
+                android:textOff="@string/japanes_food"
+                android:textOn="@string/japanes_food"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/korean_food" />
+
+            <ToggleButton
+                android:id="@+id/american_food"
+                android:layout_width="@dimen/dp_154"
+                android:layout_height="@dimen/dp_154"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginTop="@dimen/dp_36"
+                android:background="@drawable/selector_rect_radius_24_707070"
+                android:textColor="@color/black"
+                android:textOff="@string/american_food"
+                android:textOn="@string/american_food"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/korean_food" />
+
+            <ToggleButton
+                android:id="@+id/chinese_food"
+                android:layout_width="@dimen/dp_154"
+                android:layout_height="@dimen/dp_154"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:background="@drawable/selector_rect_radius_24_707070"
+                android:textColor="@color/black"
+                android:textOff="@string/korean_food"
+                android:textOn="@string/korean_food"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/american_food" />
+
+            <Button
+                android:layout_width="@dimen/dp_0"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_24"
+                android:layout_marginEnd="@dimen/dp_24"
+                android:layout_marginBottom="@dimen/dp_24"
+                android:background="@drawable/rect_radius_16_fea0a0"
+                android:text="@string/map_bound_next"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</layout>

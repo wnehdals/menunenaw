@@ -4,16 +4,23 @@ import android.graphics.Color
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.data.BundleKey
 import com.jdm.menunenaw.databinding.FragmentMapBoundBinding
+import com.jdm.menunenaw.vm.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.FlowPreview
 import net.daum.mf.map.api.MapCircle
 import net.daum.mf.map.api.MapPOIItem
 import net.daum.mf.map.api.MapPoint
 import net.daum.mf.map.api.MapView
 
+@ExperimentalCoroutinesApi
+@FlowPreview
 @AndroidEntryPoint
 class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private val TAG = MapBoundFragment::class.java.simpleName
@@ -21,8 +28,10 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private val DEFAULT_LONGITUDE = 127.0
     private val DEFAULT_CIRCLE_RADIUS = 150
     private val SEEK_BAR_MOUNT = 50
+    val SEEK_BAR_MAX = 5
 
     override val layoutId: Int = R.layout.fragment_map_bound
+    private val viewModel : MainViewModel by activityViewModels()
 
     /* Map 관련 */
     private val mapView by lazy { MapView(requireActivity()).apply {
@@ -39,20 +48,25 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         ).apply { tag = 1234 }
     }
 
+    private var locationLatitude = DEFAULT_LATITUDE
+    private var locationLongitude = DEFAULT_LONGITUDE
+    val locationName = MutableLiveData("")
+    val searchResult = MutableLiveData("")
+
     override fun initView() {
         super.initView()
+        setInitData()
         binding.apply {
+            fragment = this@MapBoundFragment
+            lifecycleOwner = this@MapBoundFragment
             llMapBoundMapContainer.addView(mapView,ViewGroup.LayoutParams.MATCH_PARENT)
-            val y = arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()
-                ?: DEFAULT_LATITUDE
-            val x = arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()
-                ?: DEFAULT_LONGITUDE
 
-            Log.i(TAG, "latitude : $y, longitude : $x ")
-            val mapPoint = MapPoint.mapPointWithGeoCoord(y, x)
+            Log.i(TAG, "latitude : ${locationLatitude}, longitude : ${locationLongitude} ")
+            val mapPoint = MapPoint.mapPointWithGeoCoord(locationLatitude, locationLongitude)
             mapView.setMapCenterPoint(mapPoint,false)
             setMarkerPos(mapPoint)
             setCircle(mapPoint)
+            searchCategory()
         }
         setSeekbarUpdate()
     }
@@ -61,10 +75,22 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
 
     }
 
+    private fun setInitData(){
+        locationLatitude = arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()
+            ?: DEFAULT_LATITUDE
+        locationLongitude = arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()
+            ?: DEFAULT_LONGITUDE
+        locationName.value = arguments?.getString(BundleKey.LOCATION_NAME.name) ?: ""
+        if(locationName.value?.isEmpty() == true){
+            moveLocation(locationLatitude,locationLongitude)
+        }
+    }
+
     private fun setSeekbarUpdate(){
         binding.sbMapBoundBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 setCircleSize(p1 * SEEK_BAR_MOUNT + DEFAULT_CIRCLE_RADIUS)
+                searchCategory()
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {}
@@ -94,6 +120,21 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         mapView.removeCircle(circle)
         circle.radius = radius
         mapView.addCircle(circle)
+    }
+
+    private fun moveLocation(latitude: Double, longitude: Double) {
+        locationLatitude = latitude
+        locationLongitude = longitude
+        viewModel.getLocationInfo(locationLatitude, locationLongitude){
+            locationName.postValue(it)
+        }
+    }
+
+    // 지정 범위 내 음식점 개수 가져오기
+    private fun searchCategory() {
+        viewModel.getSearchCategoryCount(locationLatitude, locationLongitude, circle.radius) {
+            searchResult.postValue(String.format("내위치로부터 %d개의 식당이 발견되었어요", it))
+        }
     }
 
     private val mapViewEvent = object :MapView.MapViewEventListener{
@@ -155,7 +196,11 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
 
         override fun onDraggablePOIItemMoved(mapView: MapView?, poiItem: MapPOIItem?, mapPoint: MapPoint?) {
             Log.i(TAG,"poiItemEventListener onDraggablePOIItemMoved : ${poiItem?.tag}")
-            mapPoint?.let{ setCircle(it) }
+            mapPoint?.let{
+                setCircle(it)
+                moveLocation(mapPoint.mapPointGeoCoord.latitude,mapPoint.mapPointGeoCoord.longitude)
+                searchCategory()
+            }
         }
     }
 }
