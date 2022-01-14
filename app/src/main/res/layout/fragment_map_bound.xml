@@ -42,7 +42,7 @@
             android:splitTrack="false"
             android:max="@{fragment.SEEK_BAR_MAX}"
             app:layout_constraintTop_toBottomOf="@id/ll_map_bound_map_container"
-            app:layout_constraintBottom_toTopOf="@id/bt_map_bound_next"
+            app:layout_constraintBottom_toTopOf="@id/tb_map_bound_next"
             app:layout_constraintVertical_bias="0.35" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -53,7 +53,7 @@
             android:textSize="@dimen/sp_14"
             app:layout_constraintTop_toBottomOf="@id/sb_map_bound_bar"
             app:layout_constraintStart_toStartOf="@id/sb_map_bound_bar"
-            app:layout_constraintBottom_toTopOf="@id/bt_map_bound_next"
+            app:layout_constraintBottom_toTopOf="@id/tb_map_bound_next"
             app:layout_constraintVertical_bias="0.15" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -74,11 +74,11 @@
             app:layout_constraintStart_toStartOf="@id/sb_map_bound_bar"
             app:layout_constraintEnd_toEndOf="@id/sb_map_bound_bar"
             app:layout_constraintTop_toBottomOf="@id/tv_map_bound_my_location"
-            app:layout_constraintBottom_toTopOf="@id/bt_map_bound_next"
+            app:layout_constraintBottom_toTopOf="@id/tb_map_bound_next"
             app:layout_constraintVertical_bias="0.35" />
 
         <androidx.appcompat.widget.AppCompatToggleButton
-            android:id="@+id/bt_map_bound_next"
+            android:id="@+id/tb_map_bound_next"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_50"
             android:layout_marginHorizontal="@dimen/dp_20"
@@ -86,8 +86,8 @@
             android:background="@drawable/select_rect_radius_16_8a96ff"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:textOn="@string/map_bound_next"
-            android:textOff="@string/map_bound_minimum"
+            android:textOn="@string/next_level"
+            android:textOff="@string/need_mininum_select"
             android:onClick="@{()->fragment.onClickOfNext()}"
             app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

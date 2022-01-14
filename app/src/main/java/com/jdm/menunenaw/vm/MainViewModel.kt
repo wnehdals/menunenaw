@@ -67,32 +67,17 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
         latitude: Double,
         longitude: Double,
         radius: Int,
-        complete: (Int) -> Unit
+        page : Int,
+        complete: ((Int) -> Unit)?
     ) {
         viewModelScope.launch {
             try {
-                kakaoRepo.getSearchCategory(latitude.toString(), longitude.toString(), radius).let {
-                    complete(it.meta.total_count)
+                kakaoRepo.getSearchCategory(latitude.toString(), longitude.toString(), radius,page).let {
+                    complete?.invoke(it.meta.total_count)
+                    _searchStoreResult.postValue(it.documents)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-            }
-        }
-    }
-
-    /* 근처 음식점 리스트 모두 가져오기 */
-    fun requestSearchCategoryAllList(latitude : Double, longitude : Double, radius:Int){
-        viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                val list = mutableListOf<CategorySearchResponse.Document>()
-                for(page in 1 .. MAX_STORE_COUNT){
-                    val result = kakaoRepo.getSearchCategory(latitude.toString(), longitude.toString(), radius, page)
-                    list.addAll(result.documents)
-                    if(result.meta.is_end){
-                        break
-                    }
-                }
-                _searchStoreResult.postValue(list)
             }
         }
     }
