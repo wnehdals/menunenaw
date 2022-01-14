@@ -1,10 +1,12 @@
 package com.jdm.menunenaw.ui.roulette
 
+import android.util.Log
 import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.databinding.FragmentRouletteBinding
 import androidx.constraintlayout.widget.ConstraintLayout
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.jdm.menunenaw.data.BundleKey
@@ -49,14 +51,15 @@ class RouletteFragment: ViewBindingFragment<FragmentRouletteBinding>() {
         })
     }
 
-    /** rouletteView 의 width/2 만큼 Bottom Margin 설정 */
+    /** rouletteView 의 width, Bottom Margin 설정 */
     private fun initRouletteBottomMargin() {
-        rouletteView.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
+        binding.root.viewTreeObserver.addOnGlobalLayoutListener(object : OnGlobalLayoutListener {
             override fun onGlobalLayout() {
-                rouletteView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                val params: ConstraintLayout.LayoutParams = rouletteView.layoutParams as  ConstraintLayout.LayoutParams
-                params.setMargins(0, 0, 0, -(rouletteView.width/2))
-                rouletteView.layoutParams = params
+                binding.root.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                val rouletteViewParams: ConstraintLayout.LayoutParams = rouletteView.layoutParams as  ConstraintLayout.LayoutParams
+                rouletteViewParams.width = binding.root.height
+                rouletteViewParams.setMargins(0, 0, 0, -(binding.root.height/2))
+                rouletteView.layoutParams = rouletteViewParams
             }
         })
     }

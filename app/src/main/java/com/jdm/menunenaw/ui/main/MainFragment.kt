@@ -27,7 +27,7 @@ class MainFragment : ViewBindingFragment<FragmentMainBinding>() {
         //임시 버튼 생성
         binding.button2.setOnClickListener {
             moveFragment(R.id.action_mainFragment_to_rouletteFragment, bundle = Bundle().apply {
-                putStringArrayList(BundleKey.ROULETTE_DATA_LIST.name, arrayListOf("떡볶이", "아이스크림", "뼈해장국", "피자빵", "오믈렛", "파스타"))
+                putStringArrayList(BundleKey.ROULETTE_DATA_LIST.name, arrayListOf("떡볶이", "아이스크림", "뼈해장국", "피자빵", "오믈렛", "맛있는파스타", "양재역점중국집", "김일도삼겹살집", "제주도에있는백종원맛있는돈까스집"))
             })
         }
     }

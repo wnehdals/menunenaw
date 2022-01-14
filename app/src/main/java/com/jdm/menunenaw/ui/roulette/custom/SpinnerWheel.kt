@@ -19,7 +19,6 @@ class SpinnerWheel (
 ) : View(context) {
 
     private val DEFAULT_PADDING = 20
-    private val CENTER_DOT_SIZE = 150
 
     private val rouletteSize
         get() = dataList.size
@@ -134,7 +133,8 @@ class SpinnerWheel (
         centerY = (rectF.top + rectF.bottom) / 2f
 
         drawRoulette(canvas, rectF)
-        drawCenterDot(canvas, RectF(centerX-CENTER_DOT_SIZE, centerY+CENTER_DOT_SIZE, centerX+CENTER_DOT_SIZE, centerY-CENTER_DOT_SIZE))
+        val dotRadius = centerX / 5
+        drawCenterDot(canvas, RectF(centerX-dotRadius, centerY+dotRadius, centerX+dotRadius, centerY-dotRadius))
     }
 
     /**룰렛 그리는 함수 */
@@ -153,17 +153,26 @@ class SpinnerWheel (
 
                 var text = dataList[i]
                 textPaint.textSize = when (text.length) {
-                    in 0..3 -> 60f
-                    in 4..5 -> 55f
+                    in 0..7 -> 60f
                     else -> {
-                        text = text.substring(0, 5) + ".."
-                        45f
+                        text = text.substring(0..7) + ".."
+                        55f
                     }
                 }
-                // 텍스트 넣기
-                val path = Path()
-                path.addArc(textRectF, startAngle, sweepAngle)
-                canvas.drawTextOnPath(text, path, 0f, 0f, textPaint)
+// 텍스트 넣기 - 둥글게
+//                val path = Path()
+//                path.addArc(textRectF, startAngle, sweepAngle)
+//                canvas.drawTextOnPath(text, path, 0f, 0f, textPaint)
+
+// 텍스트 넣기 - 둥글게
+                val textRect = Rect()
+                textPaint.textAlign = Paint.Align.LEFT
+                textPaint.getTextBounds(text, 0, text.length, textRect)
+                val r = rectF.width() / 2
+                val degree = startAngle + sweepAngle/2
+                canvas.rotate(degree, centerX, centerY)
+                canvas.drawText(text, (centerX + r) - (r/6 + textRect.width()), centerY + textRect.height() / 2, textPaint)
+                canvas.rotate(-degree, centerX, centerY)
             }
 //            // 내부 구분선 그리기
 //            val r = rectF.width() / 2

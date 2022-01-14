@@ -14,8 +14,7 @@
 
         <com.jdm.menunenaw.ui.roulette.custom.RouletteView
             android:id="@+id/rouletteView"
-            android:layout_width="0dp"
-            app:layout_constraintWidth_percent="1.4"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
