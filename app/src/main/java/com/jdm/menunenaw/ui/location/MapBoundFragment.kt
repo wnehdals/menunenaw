@@ -87,6 +87,12 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         }
     }
 
+    private fun setArgument(){
+        arguments?.putString(BundleKey.LOCATION_Y.name, locationLatitude.toString())
+        arguments?.putString(BundleKey.LOCATION_X.name, locationLongitude.toString())
+        arguments?.putString(BundleKey.LOCATION_NAME.name, locationName.value)
+    }
+
     private fun setSeekbarUpdate(){
         binding.sbMapBoundBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
@@ -149,6 +155,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
                 putDouble(BundleKey.LOCATION_X.name, locationLongitude)
                 putInt(BundleKey.RADIUS.name, circle.radius)
             })
+        setArgument()
     }
 
     private val mapViewEvent = object :MapView.MapViewEventListener{

@@ -5,8 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import android.location.Location
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import androidx.paging.cachedIn
 import com.jdm.menunenaw.base.ViewModelBase
-import com.jdm.menunenaw.data.MAX_STORE_COUNT
+import com.jdm.menunenaw.data.remote.repository.CategorySearchRepo
 import com.jdm.menunenaw.data.remote.repository.KaKaoRepo
 import com.jdm.menunenaw.data.remote.response.CategorySearchResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @FlowPreview
 @HiltViewModel
-class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewModelBase(){
+class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo ,private val searchRepo: CategorySearchRepo): ViewModelBase(){
     private val TAG = MainViewModel::class.java.simpleName
 
     val locationRequestTimeInterval = (1000 * 10).toLong() // 10초
@@ -81,6 +82,9 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
             }
         }
     }
+
+    fun getStoreList(y: Double, x: Double, radius: Int) =
+        searchRepo.getStoreList(y.toString(), x.toString(), radius).cachedIn(viewModelScope)
 
     enum class DataType{
         REMOTE,
