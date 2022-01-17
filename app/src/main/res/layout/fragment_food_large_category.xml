@@ -11,31 +11,48 @@
         <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
             android:background="@color/white"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:elevation="0dp">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:contentScrim="@color/white"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                app:collapsedTitleGravity="center_horizontal"
                 app:collapsedTitleTextAppearance="@style/CollapsedAppBar"
                 app:expandedTitleTextAppearance="@style/ExpandedAppBar"
-                app:title="">
+                app:expandedTitleGravity="center_horizontal|top"
+                app:expandedTitleMarginTop="@dimen/dp_60"
+                app:title="@string/food_cagegory">
+
 
                <LinearLayout
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    android:gravity="center_horizontal"
                    android:orientation="vertical">
+
                    <TextView
                        android:id="@+id/food_large_category_guid_message"
                        android:layout_width="wrap_content"
                        android:layout_height="wrap_content"
                        android:gravity="center"
-                       android:layout_marginTop="@dimen/dp_30"
-                       android:text="@string/food_large_cagegory_guid_message"
+                       android:layout_marginTop="@dimen/dp_12"
+                       android:text="@string/food_cagegory_guid_message1"
                        android:textColor="@color/black"
-                       android:textSize="@dimen/sp_30"
+                       android:textSize="@dimen/dp_28"
+                       android:textStyle="bold" />
+
+                   <TextView
+                       android:id="@+id/food_large_category_guid_message2"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"
+                       android:gravity="center"
+                       android:layout_marginTop="@dimen/dp_50"
+                       android:text="@string/food_cagegory_guid_message2"
+                       android:textColor="@color/black"
+                       android:textSize="@dimen/dp_28"
                        android:textStyle="bold" />
 
                    <TextView
@@ -47,7 +64,7 @@
                        android:padding="@dimen/dp_16"
                        android:text="@string/enable_select_duplicated"
                        android:textColor="@color/white"
-                       android:textSize="@dimen/sp_16"
+                       android:textSize="@dimen/dp_16"
                        android:textStyle="bold" />
                </LinearLayout>
 
@@ -55,19 +72,29 @@
                     android:id="@+id/toolbar_main"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
+                    android:gravity="center_vertical"
+                    android:contentInsetLeft="0dp"
+                    android:contentInsetStart="0dp"
+                    app:contentInsetLeft="0dp"
+                    app:contentInsetStart="0dp"
+                    android:contentInsetRight="0dp"
+                    android:contentInsetEnd="0dp"
+                    app:contentInsetRight="0dp"
+                    app:contentInsetEnd="0dp"
+                    android:layout_marginStart="0dp"
                     app:layout_collapseMode="pin" >
-
-                    <ImageView
-                        android:id="@+id/iv_back"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_chevron_left" />
 
                 </androidx.appcompat.widget.Toolbar>
 
             </com.google.android.material.appbar.CollapsingToolbarLayout>
         </com.google.android.material.appbar.AppBarLayout>
 
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="25dp"
+            android:layout_marginStart="20dp"
+            android:layout_height="?attr/actionBarSize"
+            android:src="@drawable/ic_chevron_left" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_food_main_category"
@@ -78,7 +105,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

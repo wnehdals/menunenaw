@@ -5,11 +5,16 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.jdm.menunenaw.R
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.android.material.chip.Chip
 import com.jdm.menunenaw.data.model.FoodCategory
 import com.jdm.menunenaw.databinding.ItemFoodMainCategoryBinding
 import com.jdm.menunenaw.utils.DiffUtilCallback
-import dagger.hilt.android.AndroidEntryPoint
+
+import com.google.android.material.chip.ChipDrawable
+import com.jdm.menunenaw.R
 
 
 class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter.FoodLargeCategoryViewHolder>(diffUtil) {
@@ -28,7 +33,21 @@ class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter
 
     inner class FoodLargeCategoryViewHolder(private val binding : ItemFoodMainCategoryBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(data : FoodCategory){
-            binding.tvTitleMainCategory.text = data.mainCategoryTitle
+            binding.tvTitle.text = data.mainCategoryTitle
+            binding.imgPhoto.run {
+                Glide.with(context)
+                    .load(R.drawable.korea)
+                    .transform(CenterCrop(), RoundedCorners(10))
+                    .into(this)
+            }
+            binding.chipGroupSubCategory.let { group ->
+                data.subCategoryList.forEach {
+                    val newChip = Chip(group.context).apply {
+                        text = it
+                    }
+                    group.addView(newChip)
+                }
+            }
         }
     }
 
