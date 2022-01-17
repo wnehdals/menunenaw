@@ -42,6 +42,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_store_select_guid_message" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_store_select_all_checked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:drawableEnd="@drawable/selector_check_8a96ff"
+            android:drawablePadding="@dimen/dp_10"
+            android:onClick="@{()->fragment.onClickOfAllChecked()}"
+            android:text="@string/str_all"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toTopOf="@id/rv_store_select_list"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_store_select_list"
             android:layout_width="match_parent"

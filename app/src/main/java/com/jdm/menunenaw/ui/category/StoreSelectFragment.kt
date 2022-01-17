@@ -27,6 +27,7 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     override val layoutId: Int = R.layout.fragment_store_select
     private val viewModel : MainViewModel by activityViewModels()
     private val storeAdapter by lazy{StorePagingAdapter()}
+
     private var locationLatitude = DEFAULT_LATITUDE
     private var locationLongitude = DEFAULT_LONGITUDE
     private var radius = DEFAULT_CIRCLE_RADIUS
@@ -34,8 +35,12 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     override fun initView() {
         initData()
         binding.apply {
+            fragment = this@StoreSelectFragment
+            lifecycleOwner = this@StoreSelectFragment
+
             rvStoreSelectList.adapter = storeAdapter
             rvStoreSelectList.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+            tvStoreSelectAllChecked.isSelected = true
         }
     }
 
@@ -51,5 +56,9 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
         arguments?.getDouble(BundleKey.LOCATION_Y.name)?.let{ locationLatitude = it }
         arguments?.getDouble(BundleKey.LOCATION_X.name)?.let{ locationLongitude = it }
         arguments?.getInt(BundleKey.RADIUS.name)?.let{ radius = it }
+    }
+
+    fun onClickOfAllChecked(){
+        binding.tvStoreSelectAllChecked.isSelected = !binding.tvStoreSelectAllChecked.isSelected
     }
 }
