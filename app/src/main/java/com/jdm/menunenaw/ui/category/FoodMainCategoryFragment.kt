@@ -1,6 +1,5 @@
 package com.jdm.menunenaw.ui.category
 
-import androidx.fragment.app.Fragment
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.data.model.FoodCategory
@@ -24,11 +23,12 @@ class FoodMainCategoryFragment : ViewBindingFragment<FragmentFoodLargeCategoryBi
     override fun initView() {
         (activity as? MainActivity)?.enableActionBar(false)
         binding.rvFoodMainCategory.adapter = adapter
+        val titleCategory = resources.getStringArray(R.array.food_category)
         adapter.submitList(listOf(
-            FoodCategory(mainCategoryTitle = "한식", subCategoryList = resources.getStringArray(R.array.korea)),
-            FoodCategory(mainCategoryTitle = "일식", subCategoryList = resources.getStringArray(R.array.japan)),
-            FoodCategory(mainCategoryTitle = "중식", subCategoryList = resources.getStringArray(R.array.china)),
-            FoodCategory(mainCategoryTitle = "양식", subCategoryList = resources.getStringArray(R.array.america))
+            FoodCategory(mainCategoryTitle = titleCategory[0], subCategoryList = resources.getStringArray(R.array.koreanFood)),
+            FoodCategory(mainCategoryTitle = titleCategory[1], subCategoryList = resources.getStringArray(R.array.americanFood)),
+            FoodCategory(mainCategoryTitle = titleCategory[2], subCategoryList = resources.getStringArray(R.array.chineseFood)),
+            FoodCategory(mainCategoryTitle = titleCategory[3], subCategoryList = resources.getStringArray(R.array.japaneseFood))
         ))
     }
 

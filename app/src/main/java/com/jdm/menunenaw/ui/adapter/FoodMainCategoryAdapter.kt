@@ -12,8 +12,6 @@ import com.google.android.material.chip.Chip
 import com.jdm.menunenaw.data.model.FoodCategory
 import com.jdm.menunenaw.databinding.ItemFoodMainCategoryBinding
 import com.jdm.menunenaw.utils.DiffUtilCallback
-
-import com.google.android.material.chip.ChipDrawable
 import com.jdm.menunenaw.R
 
 
@@ -32,7 +30,11 @@ class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter
     }
 
     inner class FoodLargeCategoryViewHolder(private val binding : ItemFoodMainCategoryBinding) : RecyclerView.ViewHolder(binding.root){
-        fun bind(data : FoodCategory){
+        fun bind(data : FoodCategory) {
+            binding.root.setOnClickListener {
+                it.isSelected = !it.isSelected
+                binding.isSelected = it.isSelected
+            }
             binding.tvTitle.text = data.mainCategoryTitle
             binding.imgPhoto.run {
                 Glide.with(context)
