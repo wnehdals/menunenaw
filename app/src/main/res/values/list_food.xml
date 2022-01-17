@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="korea">
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+    </string-array>
+    <string-array name="japan">
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+    </string-array>
+    <string-array name="china">
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+    </string-array>
+    <string-array name="america">
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+    </string-array>
+</resources>

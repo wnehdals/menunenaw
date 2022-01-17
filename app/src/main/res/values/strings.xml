@@ -23,7 +23,9 @@
 
     <string name="location_permission_no">위치정보 권환을 거부하셨습니다.</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="food_large_cagegory_guid_message">돌림판에 추가할\n카테고리를 골라주세요</string>
+    <string name="food_cagegory">카테고리</string>
+    <string name="food_cagegory_guid_message1">돌림판에 추가할</string>
+    <string name="food_cagegory_guid_message2">를 골라주세요</string>
     <string name="enable_select_duplicated">중복선택이 가능해요</string>
     <string name="korean_food">한식</string>
     <string name="japanes_food">일식</string>

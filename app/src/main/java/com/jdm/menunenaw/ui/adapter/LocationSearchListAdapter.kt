@@ -3,12 +3,12 @@ package com.jdm.menunenaw.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.data.remote.response.LocationSearchResponse.Document
 import com.jdm.menunenaw.databinding.ItemLocationSearchBinding
+import com.jdm.menunenaw.utils.DiffUtilCallback
 
 
 class LocationSearchListAdapter(private val itemClick: (Document) -> Unit) : ListAdapter<Document,LocationSearchListAdapter.LocationViewHolder>(diffUtil) {
@@ -35,20 +35,8 @@ class LocationSearchListAdapter(private val itemClick: (Document) -> Unit) : Lis
     }
 
     companion object{
-        val diffUtil = object :DiffUtil.ItemCallback<Document>(){
-            override fun areItemsTheSame(
-                oldItem: Document,
-                newItem: Document
-            ): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(
-                oldItem: Document,
-                newItem: Document
-            ): Boolean {
-                return oldItem.address == newItem.address
-            }
-        }
+        val diffUtil = DiffUtilCallback<Document>(calSame = {
+            it.first.address == it.second.address
+        })
     }
 }
