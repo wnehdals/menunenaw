@@ -26,17 +26,18 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.constraintlayout.motion.widget.MotionLayout
+                android:id="@+id/ml_category"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:minHeight="@dimen/dp_105"
-                android:padding="@dimen/dp_20">
+                app:layoutDescription="@xml/item_food_main_category_scene">
 
                 <ImageView
                     android:id="@+id/img_photo"
                     android:layout_width="@dimen/dp_80"
-                    android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="H,1:1"
+                    android:layout_height="@dimen/dp_80"
+                    android:layout_marginVertical="@dimen/dp_12"
+                    android:layout_marginStart="@dimen/dp_12"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -63,10 +64,10 @@
                     app:layout_constraintTop_toTopOf="@+id/img_photo" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_chip_group"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_15"
-                    android:visibility="@{isSelected ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/img_photo">
 
@@ -82,12 +83,13 @@
                         android:id="@+id/chip_group_sub_category"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="@dimen/dp_20"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/view" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.motion.widget.MotionLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

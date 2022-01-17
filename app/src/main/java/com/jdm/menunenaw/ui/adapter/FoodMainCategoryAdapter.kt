@@ -31,23 +31,29 @@ class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter
 
     inner class FoodLargeCategoryViewHolder(private val binding : ItemFoodMainCategoryBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind(data : FoodCategory) {
-            binding.root.setOnClickListener {
-                it.isSelected = !it.isSelected
-                binding.isSelected = it.isSelected
-            }
-            binding.tvTitle.text = data.mainCategoryTitle
-            binding.imgPhoto.run {
-                Glide.with(context)
-                    .load(R.drawable.korea)
-                    .transform(CenterCrop(), RoundedCorners(10))
-                    .into(this)
-            }
-            binding.chipGroupSubCategory.let { group ->
-                data.subCategoryList.forEach {
-                    val newChip = Chip(group.context).apply {
-                        text = it
+            binding.run {
+                root.setOnClickListener {
+                    it.isSelected = !it.isSelected
+                    if (it.isSelected) {
+                        mlCategory.transitionToEnd()
+                    } else {
+                        mlCategory.transitionToStart()
                     }
-                    group.addView(newChip)
+                }
+                tvTitle.text = data.mainCategoryTitle
+                imgPhoto.run {
+                    Glide.with(context)
+                        .load(R.drawable.korea)
+                        .transform(CenterCrop(), RoundedCorners(10))
+                        .into(this)
+                }
+                chipGroupSubCategory.let { group ->
+                    data.subCategoryList.forEach {
+                        val newChip = Chip(group.context).apply {
+                            text = it
+                        }
+                        group.addView(newChip)
+                    }
                 }
             }
         }
