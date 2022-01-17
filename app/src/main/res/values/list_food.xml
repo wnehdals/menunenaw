@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="food_category">
+        <item>한식</item>
+        <item>양식</item>
+        <item>중식</item>
+        <item>일식</item>
+    </string-array>
+    <string-array name="koreanFood">
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+    </string-array>
+    <string-array name="japaneseFood">
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+    </string-array>
+    <string-array name="chineseFood">
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+    </string-array>
+    <string-array name="americanFood">
+        <item>돼지갈비</item>
+        <item>족발</item>
+        <item>보쌈</item>
+    </string-array>
+</resources>

@@ -57,7 +57,7 @@
 
     <fragment
         android:id="@+id/foodLargeCategoryFragment"
-        android:name="com.jdm.menunenaw.ui.category.FoodLargeCategoryFragment"
+        android:name="com.jdm.menunenaw.ui.category.FoodMainCategoryFragment"
         android:label="@string/food_roulette"
         tools:layout="@layout/fragment_food_large_category"/>
 

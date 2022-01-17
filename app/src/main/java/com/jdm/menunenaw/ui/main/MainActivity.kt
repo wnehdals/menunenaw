@@ -44,4 +44,12 @@ class MainActivity : ViewBindingActivity<ActivityMainBinding>() {
         }
     }
 
+    fun enableActionBar(enable: Boolean) {
+        if (enable) {
+            supportActionBar?.show()
+        } else {
+            supportActionBar?.hide()
+        }
+    }
+
 }
