@@ -25,5 +25,16 @@ data class CategorySearchResponse(
         val x: String,
         val y: String,
         var select:Boolean? = true
-    )
+    ){
+        override fun equals(other: Any?): Boolean {
+            return if( other is Document){
+                this.id == other.id
+                        && this.category_group_code == other.category_group_code
+                        && this.y == other.y
+                        && this.x == other.x
+            }else{
+                false
+            }
+        }
+    }
 }
