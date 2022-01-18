@@ -1,5 +1,6 @@
 package com.jdm.menunenaw.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -23,9 +24,22 @@ class StorePagingAdapter :
         ))
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: StoreViewHolder, position: Int) {
         getItem(position)?.let{
-            holder.binding.tvStoreInfoName.text = it.place_name
+            with(holder.binding){
+                tvStoreInfoTitle.text = it.place_name
+                ivStoreInfoSelect.isSelected = it.select ?: true
+                distance = "${it.distance}m"
+                category = it.category_name.substring(
+                    0.coerceAtLeast(it.category_name.lastIndexOf('>') + 1),
+                    it.category_name.length
+                )
+            }
+            /*이미지가 없음.*/
+            /*Glide.with(holder.binding.root.context)
+                .load(it.place_url)
+                .into(holder.binding.ivStoreInfoImg)*/
         }
     }
 
