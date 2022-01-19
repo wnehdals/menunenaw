@@ -149,6 +149,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     }
 
     fun onClickOfNext() {
+        viewModel.requestSearchCategoryAllList(locationLatitude,locationLongitude,circle.radius)
         moveFragment(R.id.action_mapBoundFragment_to_storeSelectFragment,
             bundle = Bundle().apply {
                 putDouble(BundleKey.LOCATION_Y.name, locationLatitude)

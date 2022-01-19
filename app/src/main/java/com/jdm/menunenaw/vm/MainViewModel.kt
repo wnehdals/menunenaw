@@ -5,9 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import android.location.Location
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
 import com.jdm.menunenaw.base.ViewModelBase
-import com.jdm.menunenaw.data.remote.repository.CategorySearchRepo
+import com.jdm.menunenaw.data.MAX_STORE_COUNT
 import com.jdm.menunenaw.data.remote.repository.KaKaoRepo
 import com.jdm.menunenaw.data.remote.response.CategorySearchResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +17,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @FlowPreview
 @HiltViewModel
-class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo ,private val searchRepo: CategorySearchRepo): ViewModelBase(){
+class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewModelBase(){
     private val TAG = MainViewModel::class.java.simpleName
 
     val locationRequestTimeInterval = (1000 * 10).toLong() // 10초
@@ -42,7 +41,7 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo ,privat
         .asLiveData()
 
     private val _searchStoreResult : MutableLiveData<List<CategorySearchResponse.Document>> = MutableLiveData()
-    private val searchStoreResult : LiveData<List<CategorySearchResponse.Document>> = _searchStoreResult
+    val searchStoreResult : LiveData<List<CategorySearchResponse.Document>> = _searchStoreResult
 
     init {
 
@@ -83,8 +82,32 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo ,privat
         }
     }
 
-    fun getStoreList(y: Double, x: Double, radius: Int) =
-        searchRepo.getStoreList(y.toString(), x.toString(), radius).cachedIn(viewModelScope)
+    /* 근처 음식점 리스트 모두 가져오기 */
+    fun requestSearchCategoryAllList(latitude : Double, longitude : Double, radius:Int){
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val list = mutableListOf<CategorySearchResponse.Document>()
+                for (page in 1..MAX_STORE_COUNT) {
+                    try {
+                        val result = kakaoRepo.getSearchCategory(
+                            latitude.toString(),
+                            longitude.toString(),
+                            radius,
+                            page
+                        )
+                        list.addAll(result.documents)
+                        if (result.meta.is_end) {
+                            break
+                        }
+                    }catch (e:Exception){
+                        e.printStackTrace()
+                    }
+                }
+                _searchStoreResult.postValue(list)
+            }
+        }
+    }
+
 
     enum class DataType{
         REMOTE,

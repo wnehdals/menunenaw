@@ -1,6 +1,6 @@
 package com.jdm.menunenaw.data.remote.response
 
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 
 data class CategorySearchResponse(
     val documents: List<Document>,
@@ -25,16 +25,9 @@ data class CategorySearchResponse(
         val place_url: String,
         val road_address_name: String,
         val x: String,
-        val y: String
-    ){
-
+        val y: String,
+    ) {
         var select = true
-        var selectChangeListener : (()->Unit)? = null
-        fun updateSelect(newSelect : Boolean){
-            select = newSelect
-            selectChangeListener?.invoke()
-        }
-
 
         override fun equals(other: Any?): Boolean {
             return if( other is Document){

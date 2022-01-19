@@ -1,7 +1,6 @@
 package com.jdm.menunenaw.di
 
 import com.jdm.menunenaw.data.remote.KaKaoApi
-import com.jdm.menunenaw.data.remote.repository.CategorySearchRepo
 import com.jdm.menunenaw.data.remote.repository.KaKaoRepo
 import dagger.Module
 import dagger.Provides
@@ -18,11 +17,5 @@ object RepositoryModule {
         @AUTH kakaoApi: KaKaoApi,
     ): KaKaoRepo {
         return KaKaoRepo(kakaoApi)
-    }
-
-    @Provides
-    @ViewModelScoped
-    fun provideCategorySearchRepo(kaKaoRepo:KaKaoRepo) : CategorySearchRepo{
-        return CategorySearchRepo(kaKaoRepo)
     }
 }
