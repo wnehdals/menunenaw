@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
-      <variable
-          name="fragment"
-          type="com.jdm.menunenaw.ui.category.StoreSelectFragment" />
+
+        <variable
+            name="fragment"
+            type="com.jdm.menunenaw.ui.category.StoreSelectFragment" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,7 +55,8 @@
             android:text="@string/str_all"
             android:textSize="@dimen/sp_16"
             app:layout_constraintBottom_toTopOf="@id/rv_store_select_list"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            bind:select="@{fragment.allSelectLiveData}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_store_select_list"
@@ -61,8 +64,8 @@
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/dp_10"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintHeight_percent="0.55"
-            app:layout_constraintBottom_toTopOf="@id/bt_store_select_next" />
+            app:layout_constraintBottom_toTopOf="@id/bt_store_select_next"
+            app:layout_constraintHeight_percent="0.55" />
 
         <androidx.appcompat.widget.AppCompatToggleButton
             android:id="@+id/bt_store_select_next"
@@ -72,9 +75,9 @@
             android:layout_marginBottom="@dimen/dp_20"
             android:background="@drawable/select_rect_radius_16_8a96ff"
             android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textOn="@string/next_level"
             android:textOff="@string/need_mininum_select"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            android:textOn="@string/next_level"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

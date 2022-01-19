@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/tools">
 
     <data>
         <variable
-            name="distance"
-            type="String" />
-
-        <variable
-            name="category"
-            type="String" />
+            name="document"
+            type="com.jdm.menunenaw.data.remote.response.CategorySearchResponse.Document" />
     </data>
 
 
@@ -34,7 +31,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/selector_check_8a96ff" />
+                app:srcCompat="@drawable/selector_check_8a96ff"
+                bind:select="@{document.select}"/>
 
            <!-- <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/iv_store_info_img"
@@ -55,6 +53,7 @@
                 android:layout_marginHorizontal="@dimen/dp_10"
                 android:ellipsize="end"
                 android:textSize="@dimen/sp_18"
+                android:text="@{document.place_name}"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/iv_store_info_select"
                 app:layout_constraintEnd_toEndOf="parent" />
@@ -73,14 +72,14 @@
                     android:id="@+id/chip_store_info_sub_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{distance}"
+                    android:text="@{document.distanceText}"
                     app:chipBackgroundColor="@color/c_FEA0A0" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_store_info_sub_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{category}"
+                    android:text="@{document.subCategory}"
                     app:chipBackgroundColor="@color/c_8A96FF" />
             </com.google.android.material.chip.ChipGroup>
 

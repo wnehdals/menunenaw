@@ -1,8 +1,10 @@
 package com.jdm.menunenaw.ui.category
 
-import android.util.Log
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.lifecycleScope
+import androidx.paging.PagingData
+import androidx.paging.map
 import androidx.recyclerview.widget.RecyclerView
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
@@ -10,14 +12,13 @@ import com.jdm.menunenaw.data.BundleKey
 import com.jdm.menunenaw.data.DEFAULT_CIRCLE_RADIUS
 import com.jdm.menunenaw.data.DEFAULT_LATITUDE
 import com.jdm.menunenaw.data.DEFAULT_LONGITUDE
+import com.jdm.menunenaw.data.remote.response.CategorySearchResponse
 import com.jdm.menunenaw.databinding.FragmentStoreSelectBinding
 import com.jdm.menunenaw.ui.adapter.StorePagingAdapter
 import com.jdm.menunenaw.vm.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @ExperimentalCoroutinesApi
 @FlowPreview
@@ -32,6 +33,11 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     private var locationLongitude = DEFAULT_LONGITUDE
     private var radius = DEFAULT_CIRCLE_RADIUS
 
+    val allSelectLiveData = MutableLiveData(true)
+    private val selectList = arrayListOf<String>()
+    private val unSelectList = arrayListOf<String>()
+    private var currentSelectMode = true // true : allSelect, false : allUnSelect
+
     override fun initView() {
         initData()
         binding.apply {
@@ -40,14 +46,22 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
 
             rvStoreSelectList.adapter = storeAdapter
             rvStoreSelectList.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-            tvStoreSelectAllChecked.isSelected = true
         }
     }
 
     override fun subscribe() {
         lifecycleScope.launch {
             viewModel.getStoreList(locationLatitude,locationLongitude,radius).collectLatest {
-                storeAdapter.submitData(it)
+                withContext(Dispatchers.IO){
+                    storeAdapter.submitData(it.map {  document ->
+                        if(currentSelectMode){
+                            document.select = !unSelectList.contains(document.id)
+                        } else {
+                            document.select = selectList.contains(document.id)
+                        }
+                        document
+                    })
+                }
             }
         }
     }
@@ -58,7 +72,18 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
         arguments?.getInt(BundleKey.RADIUS.name)?.let{ radius = it }
     }
 
+    private fun resetAndSumitData(){
+        val snapshot = storeAdapter.snapshot()
+        snapshot.forEach {  document ->
+            document?.updateSelect(currentSelectMode)
+        }
+    }
+
     fun onClickOfAllChecked(){
-        binding.tvStoreSelectAllChecked.isSelected = !binding.tvStoreSelectAllChecked.isSelected
+        allSelectLiveData.value = !allSelectLiveData.value!!
+        currentSelectMode = allSelectLiveData.value!!
+        unSelectList.clear()
+        selectList.clear()
+        resetAndSumitData()
     }
 }

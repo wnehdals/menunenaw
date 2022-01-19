@@ -1,5 +1,7 @@
 package com.jdm.menunenaw.data.remote.response
 
+import androidx.lifecycle.MutableLiveData
+
 data class CategorySearchResponse(
     val documents: List<Document>,
     val meta: Meta
@@ -23,18 +25,33 @@ data class CategorySearchResponse(
         val place_url: String,
         val road_address_name: String,
         val x: String,
-        val y: String,
-        var select:Boolean? = true
+        val y: String
     ){
+
+        var select = true
+        var selectChangeListener : (()->Unit)? = null
+        fun updateSelect(newSelect : Boolean){
+            select = newSelect
+            selectChangeListener?.invoke()
+        }
+
+
         override fun equals(other: Any?): Boolean {
             return if( other is Document){
                 this.id == other.id
                         && this.category_group_code == other.category_group_code
                         && this.y == other.y
                         && this.x == other.x
+                        && this.select == other.select
             }else{
                 false
             }
         }
+
+        fun getSubCategory() = try {category_name.substring(
+            0.coerceAtLeast(category_name.lastIndexOf('>') + 1),
+            category_name.length)} catch (e: Exception){""}
+
+        fun getDistanceText() = "${distance}m"
     }
 }
