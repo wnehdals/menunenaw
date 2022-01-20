@@ -1,6 +1,5 @@
 package com.jdm.menunenaw.ui.category
 
-import android.annotation.SuppressLint
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -31,6 +30,7 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     private var radius = DEFAULT_CIRCLE_RADIUS
 
     val allSelectLiveData = MutableLiveData(true)
+    val activeNextLiveData = MutableLiveData(true)
 
     override fun initView() {
         initData()
@@ -46,7 +46,7 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     override fun subscribe() {
         viewModel.searchStoreResult.observe(this){
             it.forEach { it.select = allSelectLiveData.value!! }
-            storeAdapter.submitList(it)
+            storeAdapter.list = it
         }
     }
 
@@ -57,7 +57,14 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     }
 
     private fun reInitListItem(){
-        /* todo: update 방법 고민.*/
+        storeAdapter.list.forEach { it.updateSelect(allSelectLiveData.value!!) }
+        activeNextLiveData.value = allSelectLiveData.value
+    }
+
+    private fun updateNextButtonUi(){
+        val unSelectList = storeAdapter.list.filter { !it.select }
+        allSelectLiveData.value = unSelectList.isEmpty()
+        activeNextLiveData.value = storeAdapter.list.size - unSelectList.size >= 3
     }
 
     fun onClickOfAllChecked(){
@@ -66,6 +73,7 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     }
 
     private fun onClickOfListItem(document : CategorySearchResponse.Document){
-
+        document.updateSelect(!document.select)
+        updateNextButtonUi()
     }
 }

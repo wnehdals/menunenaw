@@ -19,6 +19,7 @@
         app:cardElevation="@dimen/dp_3">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_store_info_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/dp_10">

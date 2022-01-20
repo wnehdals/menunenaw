@@ -28,7 +28,11 @@ data class CategorySearchResponse(
         val y: String,
     ) {
         var select = true
-
+        var updateListener : (()->Unit)? = null
+        fun updateSelect(newSelect : Boolean){
+            select = newSelect
+            updateListener?.invoke()
+        }
         override fun equals(other: Any?): Boolean {
             return if( other is Document){
                 this.id == other.id
