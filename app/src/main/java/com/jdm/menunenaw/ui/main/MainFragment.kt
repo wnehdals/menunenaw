@@ -17,9 +17,6 @@ class MainFragment : ViewBindingFragment<FragmentMainBinding>() {
         super.initView()
         binding.fragment = this
         moveToRouletteFragment()
-        binding.a.setOnClickListener {
-            binding.a.flip()
-        }
     }
 
     override fun subscribe() {

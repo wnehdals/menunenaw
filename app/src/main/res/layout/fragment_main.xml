@@ -131,15 +131,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <com.jdm.menunenaw.view.FlipCardView
-            android:id="@+id/a"
-            android:layout_width="300dp"
-            android:layout_height="300dp"
-            custom:front_text="dfgsd"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
-            app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button2"
