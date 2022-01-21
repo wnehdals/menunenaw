@@ -25,5 +25,7 @@
     <color name="c_707070">#FF707070</color>
     <color name="c_F85757">#FFF85757</color>
     <color name="c_ffE2E2">#FFFFE2E2</color>
+    <color name="c_ffffffff">#FFFFFFFF</color>
+    <color name="c_5a64be">#FF5A64BE</color>
 </resources>
 

@@ -10,6 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:custom="http://schemas.android.com/apk/res/com.jdm.menunenaw"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -130,6 +131,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button2"
