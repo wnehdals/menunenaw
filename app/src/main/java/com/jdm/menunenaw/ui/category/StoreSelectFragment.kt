@@ -1,5 +1,6 @@
 package com.jdm.menunenaw.ui.category
 
+import android.util.Log
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
@@ -75,5 +76,10 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     private fun onClickOfListItem(document : CategorySearchResponse.Document){
         document.updateSelect(!document.select)
         updateNextButtonUi()
+    }
+
+    fun onClickOfNext(){
+        val selectList = storeAdapter.list.filter { it.select }
+        // todo : random 뽑기.
     }
 }

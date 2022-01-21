@@ -1,6 +1,8 @@
 package com.jdm.menunenaw.data.remote.response
 
+import android.os.Parcelable
 import android.util.Log
+import kotlinx.parcelize.Parcelize
 
 data class CategorySearchResponse(
     val documents: List<Document>,
@@ -12,7 +14,7 @@ data class CategorySearchResponse(
         val same_name: Any,
         val total_count: Int
     )
-
+    @Parcelize
     data class Document(
         val address_name: String,
         val category_group_code: String,
@@ -26,7 +28,7 @@ data class CategorySearchResponse(
         val road_address_name: String,
         val x: String,
         val y: String,
-    ) {
+    ) : Parcelable {
         var select = true
         var updateListener : (()->Unit)? = null
         fun updateSelect(newSelect : Boolean){

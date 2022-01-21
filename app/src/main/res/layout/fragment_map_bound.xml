@@ -28,7 +28,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:gravity="center"
             android:ellipsize="end"
-            android:text="@{fragment.locationName}"
+            android:text="@{fragment.locationNameLiveData}"
             app:layout_constraintTop_toBottomOf="@id/ll_map_bound_map_container"
             app:layout_constraintBottom_toTopOf="@id/sb_map_bound_bar"/>
 
@@ -68,7 +68,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@{fragment.searchResult}"
+            android:text="@{fragment.searchResultLiveData}"
             android:textSize="@dimen/sp_18"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/sb_map_bound_bar"

@@ -45,8 +45,8 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private var locationLatitude = DEFAULT_LATITUDE
     private var locationLongitude = DEFAULT_LONGITUDE
     private var zoomLavel = 0
-    val locationName = MutableLiveData("")
-    val searchResult = MutableLiveData("")
+    val locationNameLiveData = MutableLiveData("")
+    val searchResultLiveData = MutableLiveData("")
 
     override fun initView() {
         super.initView()
@@ -82,7 +82,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private fun initData(){
         arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()?.let{ locationLatitude = it }
         arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()?.let{ locationLongitude = it }
-        arguments?.getString(BundleKey.LOCATION_NAME.name)?.let{ locationName.value = it } ?: run {
+        arguments?.getString(BundleKey.LOCATION_NAME.name)?.let{ locationNameLiveData.value = it } ?: run {
             moveLocation(locationLatitude, locationLongitude)
         }
     }
@@ -90,7 +90,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private fun setArgument(){
         arguments?.putString(BundleKey.LOCATION_Y.name, locationLatitude.toString())
         arguments?.putString(BundleKey.LOCATION_X.name, locationLongitude.toString())
-        arguments?.putString(BundleKey.LOCATION_NAME.name, locationName.value)
+        arguments?.putString(BundleKey.LOCATION_NAME.name, locationNameLiveData.value)
     }
 
     private fun setSeekbarUpdate(){
@@ -133,14 +133,14 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         locationLatitude = latitude
         locationLongitude = longitude
         viewModel.getLocationInfo(locationLatitude, locationLongitude){
-            locationName.postValue(it)
+            locationNameLiveData.postValue(it)
         }
     }
 
     // 지정 범위 내 음식점 개수 가져오기
     private fun searchCategory() {
         viewModel.getSearchCategoryCount(locationLatitude, locationLongitude, circle.radius,1){
-            searchResult.postValue(String.format("내위치로부터 %d개의 식당이 발견되었어요",
+            searchResultLiveData.postValue(String.format("내위치로부터 %d개의 식당이 발견되었어요",
                 it.coerceAtMost(MAX_STORE_COUNT)
             ))
             binding.tbMapBoundNext.isChecked = it >= 3
