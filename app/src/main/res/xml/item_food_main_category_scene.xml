@@ -8,11 +8,11 @@
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80"
             android:layout_marginVertical="@dimen/dp_12"
-            android:layout_marginStart="@dimen/dp_12"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginStart="@dimen/dp_12"
+            app:layout_constraintStart_toEndOf="@+id/cb_total" />
         <Constraint android:id="@+id/cl_chip_group"
             android:visibility="invisible"
             android:layout_width="match_parent"

@@ -32,13 +32,22 @@
                 android:layout_height="wrap_content"
                 app:layoutDescription="@xml/item_food_main_category_scene">
 
+                <CheckBox
+                    android:id="@+id/cb_total"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_12"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_photo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/img_photo" />
+
                 <ImageView
                     android:id="@+id/img_photo"
                     android:layout_width="@dimen/dp_80"
                     android:layout_height="@dimen/dp_80"
                     android:layout_marginVertical="@dimen/dp_12"
                     android:layout_marginStart="@dimen/dp_12"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/cb_total"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -62,6 +71,17 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@+id/tv_title"
                     app:layout_constraintTop_toTopOf="@+id/img_photo" />
+
+                <ImageView
+                    android:id="@+id/iv_arrow"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_baseline_arrow_drop_down_24"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_count"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/tv_count"
+                    app:layout_constraintTop_toTopOf="@+id/tv_count" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/cl_chip_group"
