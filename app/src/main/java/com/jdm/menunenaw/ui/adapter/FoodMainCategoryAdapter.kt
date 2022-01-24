@@ -1,7 +1,9 @@
 package com.jdm.menunenaw.ui.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources.getColorStateList
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,6 +15,11 @@ import com.jdm.menunenaw.data.model.FoodCategory
 import com.jdm.menunenaw.databinding.ItemFoodMainCategoryBinding
 import com.jdm.menunenaw.utils.DiffUtilCallback
 import com.jdm.menunenaw.R
+
+import com.google.android.material.chip.ChipDrawable
+
+
+
 
 
 class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter.FoodLargeCategoryViewHolder>(diffUtil) {
@@ -30,9 +37,10 @@ class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter
     }
 
     inner class FoodLargeCategoryViewHolder(private val binding : ItemFoodMainCategoryBinding) : RecyclerView.ViewHolder(binding.root){
+        @SuppressLint("ResourceType")
         fun bind(data : FoodCategory) {
             binding.run {
-                root.setOnClickListener {
+                clAlways.setOnClickListener {
                     it.isSelected = !it.isSelected
                     if (it.isSelected) {
                         mlCategory.transitionToEnd()
@@ -51,6 +59,13 @@ class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter
                     data.subCategoryList.forEach {
                         val newChip = Chip(group.context).apply {
                             text = it
+                            isClickable = true
+                            isCheckable = true
+                            checkedIcon = null
+                            isChecked = true // 초기값 체크 상태로
+                            setChipBackgroundColorResource(R.drawable.chip_bg_states)
+                            setOnCheckedChangeListener { buttonView, isChecked ->
+                            }
                         }
                         group.addView(newChip)
                     }

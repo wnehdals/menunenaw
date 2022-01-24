@@ -4,43 +4,26 @@
     xmlns:motion="http://schemas.android.com/apk/res-auto">
 
     <ConstraintSet android:id="@+id/start">
-        <Constraint android:id="@+id/img_photo"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"
-            android:layout_marginVertical="@dimen/dp_12"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginStart="@dimen/dp_12"
-            app:layout_constraintStart_toEndOf="@+id/cb_total" />
         <Constraint android:id="@+id/cl_chip_group"
             android:visibility="invisible"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_photo"/>
+            app:layout_constraintTop_toBottomOf="@+id/cl_always"/>
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
-        <Constraint android:id="@+id/img_photo"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_80"
-            android:layout_marginVertical="@dimen/dp_12"
-            android:layout_marginStart="@dimen/dp_12"
-            app:layout_constraintDimensionRatio="H,1:1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
         <Constraint android:id="@id/cl_chip_group"
             android:visibility="visible"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_5"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_photo"/>
+            app:layout_constraintTop_toBottomOf="@+id/cl_always"/>
     </ConstraintSet>
 
     <Transition
+        android:id="@+id/transition_expand"
         app:motionInterpolator="linear"
         app:duration="200"
         app:constraintSetEnd="@id/end"
