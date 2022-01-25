@@ -49,15 +49,11 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
 
     /* 위도, 경도로 주소 찾기 */
     fun getLocationInfo(latitude : Double, longitude : Double, complete : (String) -> Unit){
-        viewModelScope.launch {
-            try {
-                kakaoRepo.getLocationInfo(latitude.toString(), longitude.toString()).let {
-                    if (it.documents.isNotEmpty()) {
-                        complete(it.documents[0].address.address_name)
-                    }
+        viewModelScope.launch(exceptionHandler) {
+            kakaoRepo.getLocationInfo(latitude.toString(), longitude.toString()).let {
+                if (it.documents.isNotEmpty()) {
+                    complete(it.documents[0].address.address_name)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }
@@ -70,37 +66,30 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
         page : Int,
         complete: ((Int) -> Unit)?
     ) {
-        viewModelScope.launch {
-            try {
-                kakaoRepo.getSearchCategory(latitude.toString(), longitude.toString(), radius,page).let {
+        viewModelScope.launch(exceptionHandler) {
+            kakaoRepo.getSearchCategory(latitude.toString(), longitude.toString(), radius, page)
+                .let {
                     complete?.invoke(it.meta.total_count)
                     _searchStoreResult.postValue(it.documents)
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
         }
     }
 
     /* 근처 음식점 리스트 모두 가져오기 */
     fun requestSearchCategoryAllList(latitude : Double, longitude : Double, radius:Int){
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             withContext(Dispatchers.IO) {
                 val list = mutableListOf<CategorySearchResponse.Document>()
                 for (page in 1..MAX_STORE_COUNT) {
-                    try {
-                        val result = kakaoRepo.getSearchCategory(
-                            latitude.toString(),
-                            longitude.toString(),
-                            radius,
-                            page
-                        )
-                        list.addAll(result.documents)
-                        if (result.meta.is_end) {
-                            break
-                        }
-                    }catch (e:Exception){
-                        e.printStackTrace()
+                    val result = kakaoRepo.getSearchCategory(
+                        latitude.toString(),
+                        longitude.toString(),
+                        radius,
+                        page
+                    )
+                    list.addAll(result.documents)
+                    if (result.meta.is_end) {
+                        break
                     }
                 }
                 _searchStoreResult.postValue(list)
