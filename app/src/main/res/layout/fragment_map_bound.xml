@@ -6,6 +6,10 @@
         <variable
             name="fragment"
             type="com.jdm.menunenaw.ui.location.MapBoundFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.jdm.menunenaw.vm.MapBoundViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +23,6 @@
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_10"
             app:layout_constraintTop_toTopOf="parent"
-
             app:layout_constraintDimensionRatio="1" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -28,7 +31,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:gravity="center"
             android:ellipsize="end"
-            android:text="@{fragment.locationNameLiveData}"
+            android:text="@{viewModel.locationNameLiveData}"
             app:layout_constraintTop_toBottomOf="@id/ll_map_bound_map_container"
             app:layout_constraintBottom_toTopOf="@id/sb_map_bound_bar"/>
 
@@ -65,10 +68,10 @@
             app:layout_constraintEnd_toEndOf="@id/sb_map_bound_bar" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_map_bound_store_count"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@{fragment.searchResultLiveData}"
             android:textSize="@dimen/sp_18"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@id/sb_map_bound_bar"

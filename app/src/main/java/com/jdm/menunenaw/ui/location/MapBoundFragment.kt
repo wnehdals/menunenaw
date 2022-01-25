@@ -5,13 +5,12 @@ import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.viewModels
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.data.*
 import com.jdm.menunenaw.databinding.FragmentMapBoundBinding
-import com.jdm.menunenaw.vm.MainViewModel
+import com.jdm.menunenaw.vm.MapBoundViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -29,7 +28,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     val SEEK_BAR_MAX = 5
 
     override val layoutId: Int = R.layout.fragment_map_bound
-    private val viewModel : MainViewModel by activityViewModels()
+    private val viewModel : MapBoundViewModel by viewModels()
 
     /* Map 관련 */
     private lateinit var mapView : MapView
@@ -45,8 +44,6 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private var locationLatitude = DEFAULT_LATITUDE
     private var locationLongitude = DEFAULT_LONGITUDE
     private var zoomLavel = 0
-    val locationNameLiveData = MutableLiveData("")
-    val searchResultLiveData = MutableLiveData("")
 
     override fun initView() {
         super.initView()
@@ -55,6 +52,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         binding.apply {
             fragment = this@MapBoundFragment
             lifecycleOwner = this@MapBoundFragment
+            viewModel = viewModel
             mapView = MapView(requireActivity()).apply {
                 setMapViewEventListener(mapViewEvent)
                 setPOIItemEventListener(poiItemEventListener)
@@ -72,7 +70,13 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
         setSeekbarUpdate()
     }
 
-    override fun subscribe() {}
+    override fun subscribe() {
+        viewModel.searchResultLiveData.observe(this){
+            binding.tvMapBoundStoreCount.text = String.format("내위치로부터 %d개의 식당이 발견되었어요", it.coerceAtMost(MAX_STORE_COUNT))
+            binding.tbMapBoundNext.isChecked = it >= 3
+            binding.tbMapBoundNext.isEnabled = binding.tbMapBoundNext.isChecked
+        }
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -82,7 +86,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private fun initData(){
         arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()?.let{ locationLatitude = it }
         arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()?.let{ locationLongitude = it }
-        arguments?.getString(BundleKey.LOCATION_NAME.name)?.let{ locationNameLiveData.value = it } ?: run {
+        arguments?.getString(BundleKey.LOCATION_NAME.name)?.let{ viewModel.setLocationName(it) } ?: run {
             moveLocation(locationLatitude, locationLongitude)
         }
     }
@@ -90,7 +94,7 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private fun setArgument(){
         arguments?.putString(BundleKey.LOCATION_Y.name, locationLatitude.toString())
         arguments?.putString(BundleKey.LOCATION_X.name, locationLongitude.toString())
-        arguments?.putString(BundleKey.LOCATION_NAME.name, locationNameLiveData.value)
+        arguments?.putString(BundleKey.LOCATION_NAME.name, viewModel.locationNameLiveData.value)
     }
 
     private fun setSeekbarUpdate(){
@@ -132,29 +136,20 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private fun moveLocation(latitude: Double, longitude: Double) {
         locationLatitude = latitude
         locationLongitude = longitude
-        viewModel.getLocationInfo(locationLatitude, locationLongitude){
-            locationNameLiveData.postValue(it)
-        }
+        viewModel.getLocationInfo(locationLatitude, locationLongitude)
     }
 
     // 지정 범위 내 음식점 개수 가져오기
     private fun searchCategory() {
-        viewModel.getSearchCategoryCount(locationLatitude, locationLongitude, circle.radius,1){
-            searchResultLiveData.postValue(String.format("내위치로부터 %d개의 식당이 발견되었어요",
-                it.coerceAtMost(MAX_STORE_COUNT)
-            ))
-            binding.tbMapBoundNext.isChecked = it >= 3
-            binding.tbMapBoundNext.isEnabled = binding.tbMapBoundNext.isChecked
-        }
+        viewModel.getSearchCategoryCount(locationLatitude, locationLongitude, 500,1) // circle.radius
     }
 
     fun onClickOfNext() {
-        viewModel.requestSearchCategoryAllList(locationLatitude,locationLongitude,circle.radius)
         moveFragment(R.id.action_mapBoundFragment_to_storeSelectFragment,
             bundle = Bundle().apply {
                 putDouble(BundleKey.LOCATION_Y.name, locationLatitude)
                 putDouble(BundleKey.LOCATION_X.name, locationLongitude)
-                putInt(BundleKey.RADIUS.name, circle.radius)
+                putInt(BundleKey.RADIUS.name, 500) // circle.radius
             })
         setArgument()
     }

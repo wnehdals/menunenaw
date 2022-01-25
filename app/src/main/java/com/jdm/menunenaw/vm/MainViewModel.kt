@@ -47,34 +47,6 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
 
     }
 
-    /* 위도, 경도로 주소 찾기 */
-    fun getLocationInfo(latitude : Double, longitude : Double, complete : (String) -> Unit){
-        viewModelScope.launch(exceptionHandler) {
-            kakaoRepo.getLocationInfo(latitude.toString(), longitude.toString()).let {
-                if (it.documents.isNotEmpty()) {
-                    complete(it.documents[0].address.address_name)
-                }
-            }
-        }
-    }
-
-    /* 근처 음식점 개수 */
-    fun getSearchCategoryCount(
-        latitude: Double,
-        longitude: Double,
-        radius: Int,
-        page : Int,
-        complete: ((Int) -> Unit)?
-    ) {
-        viewModelScope.launch(exceptionHandler) {
-            kakaoRepo.getSearchCategory(latitude.toString(), longitude.toString(), radius, page)
-                .let {
-                    complete?.invoke(it.meta.total_count)
-                    _searchStoreResult.postValue(it.documents)
-                }
-        }
-    }
-
     /* 근처 음식점 리스트 모두 가져오기 */
     fun requestSearchCategoryAllList(latitude : Double, longitude : Double, radius:Int){
         viewModelScope.launch(exceptionHandler) {
