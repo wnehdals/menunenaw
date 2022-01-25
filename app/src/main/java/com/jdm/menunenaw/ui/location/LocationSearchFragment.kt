@@ -148,6 +148,11 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.queryFlow.value = ""
+    }
+
     private fun onClickOfLocationItem(item: LocationSearchResponse.Document) {
         Log.i(TAG, "onClickOfLocationItem : $item ")
         binding.let { context?.controlSoftKeyboard(it.root, false) }
