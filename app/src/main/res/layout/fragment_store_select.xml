@@ -8,6 +8,10 @@
         <variable
             name="fragment"
             type="com.jdm.menunenaw.ui.category.StoreSelectFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.jdm.menunenaw.vm.StoreSelectViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -56,7 +60,7 @@
             android:textSize="@dimen/sp_16"
             app:layout_constraintBottom_toTopOf="@id/rv_store_select_list"
             app:layout_constraintStart_toStartOf="parent"
-            bind:select="@{fragment.allSelectLiveData}" />
+            bind:select="@{viewModel.allSelectLiveData}" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_store_select_list"
@@ -74,8 +78,8 @@
             android:layout_marginHorizontal="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_20"
             android:background="@drawable/select_rect_radius_16_8a96ff"
-            android:checked="@{fragment.activeNextLiveData}"
-            android:enabled="@{fragment.activeNextLiveData}"
+            android:checked="@{viewModel.activeNextLiveData}"
+            android:enabled="@{viewModel.activeNextLiveData}"
             android:onClick="@{()->fragment.onClickOfNext()}"
             android:textColor="@color/white"
             android:textOff="@string/need_mininum_select"

@@ -40,36 +40,6 @@ class MainViewModel @Inject constructor(private val kakaoRepo: KaKaoRepo): ViewM
         .flowOn(Dispatchers.IO)
         .asLiveData()
 
-    private val _searchStoreResult : MutableLiveData<List<CategorySearchResponse.Document>> = MutableLiveData()
-    val searchStoreResult : LiveData<List<CategorySearchResponse.Document>> = _searchStoreResult
-
-    init {
-
-    }
-
-    /* 근처 음식점 리스트 모두 가져오기 */
-    fun requestSearchCategoryAllList(latitude : Double, longitude : Double, radius:Int){
-        viewModelScope.launch(exceptionHandler) {
-            withContext(Dispatchers.IO) {
-                val list = mutableListOf<CategorySearchResponse.Document>()
-                for (page in 1..MAX_STORE_COUNT) {
-                    val result = kakaoRepo.getSearchCategory(
-                        latitude.toString(),
-                        longitude.toString(),
-                        radius,
-                        page
-                    )
-                    list.addAll(result.documents)
-                    if (result.meta.is_end) {
-                        break
-                    }
-                }
-                _searchStoreResult.postValue(list)
-            }
-        }
-    }
-
-
     enum class DataType{
         REMOTE,
         DB

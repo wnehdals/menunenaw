@@ -1,8 +1,6 @@
 package com.jdm.menunenaw.ui.category
 
-import android.util.Log
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
@@ -13,7 +11,7 @@ import com.jdm.menunenaw.data.DEFAULT_LONGITUDE
 import com.jdm.menunenaw.data.remote.response.CategorySearchResponse
 import com.jdm.menunenaw.databinding.FragmentStoreSelectBinding
 import com.jdm.menunenaw.ui.adapter.StorePagingAdapter
-import com.jdm.menunenaw.vm.MainViewModel
+import com.jdm.menunenaw.vm.StoreSelectViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 
@@ -23,20 +21,19 @@ import kotlinx.coroutines.*
 class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
 
     override val layoutId: Int = R.layout.fragment_store_select
-    private val viewModel : MainViewModel by activityViewModels()
+    private val viewModel : StoreSelectViewModel by viewModels()
     private val storeAdapter by lazy{StorePagingAdapter{ onClickOfListItem(it) } }
 
     private var locationLatitude = DEFAULT_LATITUDE
     private var locationLongitude = DEFAULT_LONGITUDE
     private var radius = DEFAULT_CIRCLE_RADIUS
 
-    val allSelectLiveData = MutableLiveData(true)
-    val activeNextLiveData = MutableLiveData(true)
-
     override fun initView() {
         initData()
+        viewModel.requestSearchCategoryAllList(locationLatitude,locationLongitude,radius)
         binding.apply {
             fragment = this@StoreSelectFragment
+            viewModel = this@StoreSelectFragment.viewModel
             lifecycleOwner = this@StoreSelectFragment
 
             rvStoreSelectList.adapter = storeAdapter
@@ -46,7 +43,7 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
 
     override fun subscribe() {
         viewModel.searchStoreResult.observe(this){
-            it.forEach { it.select = allSelectLiveData.value!! }
+            it.forEach { it.select = viewModel.allSelectLiveData.value!! }
             storeAdapter.list = it
         }
     }
@@ -58,18 +55,18 @@ class StoreSelectFragment : ViewBindingFragment<FragmentStoreSelectBinding>() {
     }
 
     private fun reInitListItem(){
-        storeAdapter.list.forEach { it.updateSelect(allSelectLiveData.value!!) }
-        activeNextLiveData.value = allSelectLiveData.value
+        storeAdapter.list.forEach { it.updateSelect(viewModel.allSelectLiveData.value!!) }
+        viewModel.activeNextLiveData.value = viewModel.allSelectLiveData.value
     }
 
     private fun updateNextButtonUi(){
         val unSelectList = storeAdapter.list.filter { !it.select }
-        allSelectLiveData.value = unSelectList.isEmpty()
-        activeNextLiveData.value = storeAdapter.list.size - unSelectList.size >= 3
+        viewModel.allSelectLiveData.value = unSelectList.isEmpty()
+        viewModel.activeNextLiveData.value = storeAdapter.list.size - unSelectList.size >= 3
     }
 
     fun onClickOfAllChecked(){
-        allSelectLiveData.value = !allSelectLiveData.value!!
+        viewModel.allSelectLiveData.value = !viewModel.allSelectLiveData.value!!
         reInitListItem()
     }
 
