@@ -73,15 +73,26 @@
                     android:id="@+id/chip_store_info_sub_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="@{document.distanceText}"
+                    android:textColor="@color/black"
                     app:chipBackgroundColor="@color/c_FEA0A0" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_store_info_sub_category"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:enabled="false"
                     android:text="@{document.subCategory}"
+                    android:textColor="@color/black"
                     app:chipBackgroundColor="@color/c_8A96FF" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_store_info_sub_detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/store_info_detail"
+                    app:chipBackgroundColor="@color/spinner_wheel_fill_3" />
             </com.google.android.material.chip.ChipGroup>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

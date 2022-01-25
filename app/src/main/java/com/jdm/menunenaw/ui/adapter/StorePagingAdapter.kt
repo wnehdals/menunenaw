@@ -1,6 +1,8 @@
 package com.jdm.menunenaw.ui.adapter
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -45,6 +47,15 @@ class StorePagingAdapter(val itemClick: (Document) -> Unit) :
                 this.document = document
                 document.updateListener = { this.ivStoreInfoSelect.select = document.select }
                 clStoreInfoContainer.setOnClickListener { itemClick(document) }
+                chipStoreInfoSubDetail.setOnClickListener {
+                    try {
+                        binding.root.context.startActivity(
+                            Intent(Intent.ACTION_VIEW).apply { data = Uri.parse(document.place_url) }
+                        )
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
             }
         }
     }

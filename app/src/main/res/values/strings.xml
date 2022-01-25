@@ -23,6 +23,8 @@
     <string name="map_bound_my_location">내위치</string>
     <string name="map_bound_near_location">근처위치</string>
 
+    <string name="store_info_detail">자세히 보기</string>
+
     <string name="location_permission_no">위치정보 권환을 거부하셨습니다.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="food_cagegory">카테고리</string>
