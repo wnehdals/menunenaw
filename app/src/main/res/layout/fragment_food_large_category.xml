@@ -100,6 +100,7 @@
             android:layout_width="25dp"
             android:layout_marginStart="20dp"
             android:layout_height="?attr/actionBarSize"
+            android:onClick="@{() -> fragment.onClickBackButton()}"
             android:src="@drawable/ic_chevron_left" />
 
         <androidx.recyclerview.widget.RecyclerView

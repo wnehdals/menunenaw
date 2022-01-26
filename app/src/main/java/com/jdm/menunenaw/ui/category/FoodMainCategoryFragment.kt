@@ -2,6 +2,7 @@ package com.jdm.menunenaw.ui.category
 
 import android.util.Log
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.data.model.FoodCategory
@@ -47,6 +48,10 @@ class FoodMainCategoryFragment : ViewBindingFragment<FragmentFoodLargeCategoryBi
             )
         }
         return list
+    }
+
+    fun onClickBackButton() {
+        findNavController().popBackStack()
     }
 
     fun onClickNext() {
