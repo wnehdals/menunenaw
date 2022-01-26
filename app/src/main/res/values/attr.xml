@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="flip_card_view">
+        <attr name="isChoice" format="boolean" />
+        <attr name="front_text" format="string" />
+    </declare-styleable>
+</resources>

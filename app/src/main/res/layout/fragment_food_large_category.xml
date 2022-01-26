@@ -117,7 +117,7 @@
                 android:layout_marginHorizontal="@dimen/dp_24"
                 android:layout_marginVertical="@dimen/dp_10"
                 android:background="@drawable/rect_radius_16_fea0a0"
-                android:text="@string/map_bound_next"
+                android:text="@string/next_level"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_16" />
         </RelativeLayout>

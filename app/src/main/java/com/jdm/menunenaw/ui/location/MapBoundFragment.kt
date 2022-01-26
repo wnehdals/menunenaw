@@ -1,16 +1,16 @@
 package com.jdm.menunenaw.ui.location
 
 import android.graphics.Color
+import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
 import android.widget.SeekBar
-import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.MutableLiveData
+import androidx.fragment.app.viewModels
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
-import com.jdm.menunenaw.data.BundleKey
+import com.jdm.menunenaw.data.*
 import com.jdm.menunenaw.databinding.FragmentMapBoundBinding
-import com.jdm.menunenaw.vm.MainViewModel
+import com.jdm.menunenaw.vm.MapBoundViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.FlowPreview
@@ -24,21 +24,14 @@ import net.daum.mf.map.api.MapView
 @AndroidEntryPoint
 class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private val TAG = MapBoundFragment::class.java.simpleName
-    private val DEFAULT_LATITUDE = 37.0
-    private val DEFAULT_LONGITUDE = 127.0
-    private val DEFAULT_CIRCLE_RADIUS = 150
-    private val SEEK_BAR_MOUNT = 50
+    private val SEEK_BAR_MOUNT = 15
     val SEEK_BAR_MAX = 5
 
     override val layoutId: Int = R.layout.fragment_map_bound
-    private val viewModel : MainViewModel by activityViewModels()
+    private val viewModel : MapBoundViewModel by viewModels()
 
     /* Map 관련 */
-    private val mapView by lazy { MapView(requireActivity()).apply {
-        setMapViewEventListener(mapViewEvent)
-        setPOIItemEventListener(poiItemEventListener)
-    }}
-
+    private lateinit var mapView : MapView
     private val marker by lazy { MapPOIItem() }
     private val circle by lazy{
         MapCircle(MapPoint.mapPointWithGeoCoord(DEFAULT_LATITUDE, DEFAULT_LONGITUDE),
@@ -50,16 +43,22 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
 
     private var locationLatitude = DEFAULT_LATITUDE
     private var locationLongitude = DEFAULT_LONGITUDE
-    val locationName = MutableLiveData("")
-    val searchResult = MutableLiveData("")
+    private var zoomLavel = 0
 
     override fun initView() {
         super.initView()
-        setInitData()
+        initData()
+
         binding.apply {
             fragment = this@MapBoundFragment
             lifecycleOwner = this@MapBoundFragment
-            llMapBoundMapContainer.addView(mapView,ViewGroup.LayoutParams.MATCH_PARENT)
+            viewModel = viewModel
+            mapView = MapView(requireActivity()).apply {
+                setMapViewEventListener(mapViewEvent)
+                setPOIItemEventListener(poiItemEventListener)
+                setZoomLevel(zoomLavel, false)
+            }
+            llMapBoundMapContainer.addView(mapView, ViewGroup.LayoutParams.MATCH_PARENT)
 
             Log.i(TAG, "latitude : ${locationLatitude}, longitude : ${locationLongitude} ")
             val mapPoint = MapPoint.mapPointWithGeoCoord(locationLatitude, locationLongitude)
@@ -72,18 +71,30 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     }
 
     override fun subscribe() {
-
+        viewModel.searchResultLiveData.observe(this){
+            binding.tvMapBoundStoreCount.text = String.format("내위치로부터 %d개의 식당이 발견되었어요", it.coerceAtMost(MAX_STORE_COUNT))
+            binding.tbMapBoundNext.isChecked = it >= 3
+            binding.tbMapBoundNext.isEnabled = binding.tbMapBoundNext.isChecked
+        }
     }
 
-    private fun setInitData(){
-        locationLatitude = arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()
-            ?: DEFAULT_LATITUDE
-        locationLongitude = arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()
-            ?: DEFAULT_LONGITUDE
-        locationName.value = arguments?.getString(BundleKey.LOCATION_NAME.name) ?: ""
-        if(locationName.value?.isEmpty() == true){
-            moveLocation(locationLatitude,locationLongitude)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        binding.llMapBoundMapContainer.removeView(mapView)
+    }
+
+    private fun initData(){
+        arguments?.getString(BundleKey.LOCATION_Y.name)?.toDouble()?.let{ locationLatitude = it }
+        arguments?.getString(BundleKey.LOCATION_X.name)?.toDouble()?.let{ locationLongitude = it }
+        arguments?.getString(BundleKey.LOCATION_NAME.name)?.let{ viewModel.setLocationName(it) } ?: run {
+            moveLocation(locationLatitude, locationLongitude)
         }
+    }
+
+    private fun setArgument(){
+        arguments?.putString(BundleKey.LOCATION_Y.name, locationLatitude.toString())
+        arguments?.putString(BundleKey.LOCATION_X.name, locationLongitude.toString())
+        arguments?.putString(BundleKey.LOCATION_NAME.name, viewModel.locationNameLiveData.value)
     }
 
     private fun setSeekbarUpdate(){
@@ -125,65 +136,69 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
     private fun moveLocation(latitude: Double, longitude: Double) {
         locationLatitude = latitude
         locationLongitude = longitude
-        viewModel.getLocationInfo(locationLatitude, locationLongitude){
-            locationName.postValue(it)
-        }
+        viewModel.getLocationInfo(locationLatitude, locationLongitude)
     }
 
     // 지정 범위 내 음식점 개수 가져오기
     private fun searchCategory() {
-        viewModel.getSearchCategoryCount(locationLatitude, locationLongitude, circle.radius) {
-            searchResult.postValue(String.format("내위치로부터 %d개의 식당이 발견되었어요", it))
-        }
+        viewModel.getSearchCategoryCount(locationLatitude, locationLongitude, 500,1) // circle.radius
+    }
+
+    fun onClickOfNext() {
+        moveFragment(R.id.action_mapBoundFragment_to_storeSelectFragment,
+            bundle = Bundle().apply {
+                putDouble(BundleKey.LOCATION_Y.name, locationLatitude)
+                putDouble(BundleKey.LOCATION_X.name, locationLongitude)
+                putInt(BundleKey.RADIUS.name, 500) // circle.radius
+            })
+        setArgument()
     }
 
     private val mapViewEvent = object :MapView.MapViewEventListener{
         override fun onMapViewInitialized(p0: MapView?) {}
 
         override fun onMapViewCenterPointMoved(p0: MapView?, p1: MapPoint?) {
-            Log.i(TAG,"mapViewEvent onMapViewCenterPointMoved : $p1")
-
+            Log.d(TAG,"mapViewEvent onMapViewCenterPointMoved : $p1")
         }
 
         override fun onMapViewZoomLevelChanged(p0: MapView?, p1: Int) {
-            Log.i(TAG,"mapViewEvent onMapViewZoomLevelChanged : $p1")
-
+            Log.d(TAG,"mapViewEvent onMapViewZoomLevelChanged : $p1")
+            zoomLavel = p1
         }
 
         override fun onMapViewSingleTapped(p0: MapView?, p1: MapPoint?) {
-            Log.i(TAG,"mapViewEvent onMapViewSingleTapped : $p1")
-
+            Log.d(TAG,"mapViewEvent onMapViewSingleTapped : $p1")
         }
 
         override fun onMapViewDoubleTapped(p0: MapView?, p1: MapPoint?) {
-            Log.i(TAG,"mapViewEvent onMapViewDoubleTapped : $p1")
+            Log.d(TAG,"mapViewEvent onMapViewDoubleTapped : $p1")
         }
 
         override fun onMapViewLongPressed(p0: MapView?, p1: MapPoint?) {
-            Log.i(TAG,"mapViewEvent onMapViewLongPressed : $p1")
+            Log.d(TAG,"mapViewEvent onMapViewLongPressed : $p1")
         }
 
         override fun onMapViewDragStarted(p0: MapView?, p1: MapPoint?) {
-            Log.i(TAG,"mapViewEvent onMapViewDragStarted : $p1")
+            Log.d(TAG,"mapViewEvent onMapViewDragStarted : $p1")
         }
 
         override fun onMapViewDragEnded(p0: MapView?, p1: MapPoint?) {
-            Log.i(TAG,"mapViewEvent onMapViewDragEnded : $p1")
+            Log.d(TAG,"mapViewEvent onMapViewDragEnded : $p1")
         }
 
         override fun onMapViewMoveFinished(p0: MapView?, p1: MapPoint?) {
-            Log.i(TAG,"mapViewEvent onMapViewMoveFinished : $p1")
+            Log.d(TAG,"mapViewEvent onMapViewMoveFinished : $p1")
         }
     }
 
     // 마커 관련 이벤트
     private val poiItemEventListener = object :MapView.POIItemEventListener{
         override fun onPOIItemSelected(mapView: MapView?, poiItem: MapPOIItem?) {
-            Log.i(TAG,"poiItemEventListener onPOIItemSelected : ${poiItem?.tag}")
+            Log.d(TAG,"poiItemEventListener onPOIItemSelected : ${poiItem?.tag}")
         }
 
         override fun onCalloutBalloonOfPOIItemTouched(mapView: MapView?, poiItem: MapPOIItem?) {
-            Log.i(TAG,"poiItemEventListener onCalloutBalloonOfPOIItemTouched : ${poiItem?.tag}")
+            Log.d(TAG,"poiItemEventListener onCalloutBalloonOfPOIItemTouched : ${poiItem?.tag}")
         }
 
         override fun onCalloutBalloonOfPOIItemTouched(
@@ -191,11 +206,11 @@ class MapBoundFragment : ViewBindingFragment<FragmentMapBoundBinding>() {
             poiItem: MapPOIItem?,
             p2: MapPOIItem.CalloutBalloonButtonType?
         ) {
-            Log.i(TAG,"poiItemEventListener onCalloutBalloonOfPOIItemTouched : ${poiItem?.tag}")
+            Log.d(TAG,"poiItemEventListener onCalloutBalloonOfPOIItemTouched : ${poiItem?.tag}")
         }
 
         override fun onDraggablePOIItemMoved(mapView: MapView?, poiItem: MapPOIItem?, mapPoint: MapPoint?) {
-            Log.i(TAG,"poiItemEventListener onDraggablePOIItemMoved : ${poiItem?.tag}")
+            Log.d(TAG,"poiItemEventListener onDraggablePOIItemMoved : ${poiItem?.tag}")
             mapPoint?.let{
                 setCircle(it)
                 moveLocation(mapPoint.mapPointGeoCoord.latitude,mapPoint.mapPointGeoCoord.longitude)

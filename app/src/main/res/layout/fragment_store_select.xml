@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="fragment"
+            type="com.jdm.menunenaw.ui.category.StoreSelectFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.jdm.menunenaw.vm.StoreSelectViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_store_select_guid_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_30"
+            android:gravity="center"
+            android:text="@string/store_select_guid_message"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_30"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_store_select_enable_duplicated_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_16"
+            android:background="@drawable/rect_radius_24_grad_8a96ff"
+            android:padding="@dimen/dp_16"
+            android:text="@string/enable_select_duplicated"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_store_select_guid_message" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_store_select_all_checked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:drawableEnd="@drawable/selector_check_8a96ff"
+            android:drawablePadding="@dimen/dp_10"
+            android:onClick="@{()->fragment.onClickOfAllChecked()}"
+            android:text="@string/str_all"
+            android:textSize="@dimen/sp_16"
+            app:layout_constraintBottom_toTopOf="@id/rv_store_select_list"
+            app:layout_constraintStart_toStartOf="parent"
+            bind:select="@{viewModel.allSelectLiveData}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_store_select_list"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/dp_10"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toTopOf="@id/bt_store_select_next"
+            app:layout_constraintHeight_percent="0.55" />
+
+        <androidx.appcompat.widget.AppCompatToggleButton
+            android:id="@+id/bt_store_select_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:layout_marginHorizontal="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/select_rect_radius_16_8a96ff"
+            android:checked="@{viewModel.activeNextLiveData}"
+            android:enabled="@{viewModel.activeNextLiveData}"
+            android:onClick="@{()->fragment.onClickOfNext()}"
+            android:textColor="@color/white"
+            android:textOff="@string/need_mininum_select"
+            android:textOn="@string/next_level"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

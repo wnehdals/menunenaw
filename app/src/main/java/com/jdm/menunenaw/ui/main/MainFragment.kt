@@ -32,7 +32,7 @@ class MainFragment : ViewBindingFragment<FragmentMainBinding>() {
         }
     }
 
-    fun onClickOfRestaurantRoulette(){
+    fun onClickOfStoreRoulette(){
         moveFragment(R.id.action_mainFragment_to_locationSearchFragment)
     }
     fun onClickOfFoodRoulette() {

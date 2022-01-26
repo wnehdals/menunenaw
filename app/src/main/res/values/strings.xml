@@ -8,6 +8,9 @@
     <string name="solve_decide_menu">선택장애를 해결해줄게</string>
     <string name="food_roulette">음식돌림판</string>
     <string name="store_roulette">식당돌림판</string>
+    <string name="next_level">다음 단계</string>
+    <string name="need_mininum_select">3개 이상 선택해 주세요</string>
+    <string name="str_all">All</string>
 
     <string name="roulette_button_text">돌려돌려 돌림판</string>
     
@@ -17,9 +20,10 @@
     <string name="location_search_recent">최근 검색한 주소</string>
 
     <string name="map_bound_title">범위 지정</string>
-    <string name="map_bound_next">다음 단계</string>
     <string name="map_bound_my_location">내위치</string>
     <string name="map_bound_near_location">근처위치</string>
+
+    <string name="store_info_detail">자세히 보기</string>
 
     <string name="location_permission_no">위치정보 권환을 거부하셨습니다.</string>
     <!-- TODO: Remove or change this placeholder text -->
@@ -31,4 +35,6 @@
     <string name="japanes_food">일식</string>
     <string name="american_food">양식</string>
     <string name="chinese_food">중식</string>
+
+    <string name="store_select_guid_message">돌림판에 추가할\n음식점을 골라주세요</string>
 </resources>
