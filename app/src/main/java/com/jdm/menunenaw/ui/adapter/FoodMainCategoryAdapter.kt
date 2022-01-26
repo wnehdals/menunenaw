@@ -1,8 +1,10 @@
 package com.jdm.menunenaw.ui.adapter
 
+import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
@@ -42,6 +44,7 @@ class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter
                     } else {
                         mlCategory.transitionToStart()
                     }
+                    ObjectAnimator.ofFloat(ivArrow, View.ROTATION, if (it.isSelected) 0f else 180f, if (it.isSelected) 180f else 0f).setDuration(200).start();
                 }
                 tvTitle.text = data.mainCategoryTitle
                 tvCount.apply {
