@@ -18,5 +18,4 @@ object RepositoryModule {
     ): KaKaoRepo {
         return KaKaoRepo(kakaoApi)
     }
-
 }

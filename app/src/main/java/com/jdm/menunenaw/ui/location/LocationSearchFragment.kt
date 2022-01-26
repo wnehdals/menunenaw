@@ -19,6 +19,8 @@ import androidx.navigation.fragment.findNavController
 import com.jdm.menunenaw.R
 import com.jdm.menunenaw.base.ViewBindingFragment
 import com.jdm.menunenaw.data.BundleKey
+import com.jdm.menunenaw.data.DEFAULT_LATITUDE
+import com.jdm.menunenaw.data.DEFAULT_LONGITUDE
 import com.jdm.menunenaw.data.remote.response.LocationSearchResponse
 import com.jdm.menunenaw.databinding.FragmentLocationSearchBinding
 import com.jdm.menunenaw.ui.adapter.LocationSearchListAdapter
@@ -37,6 +39,9 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
     private val TAG = LocationSearchFragment::class.java.simpleName
     override val layoutId: Int = R.layout.fragment_location_search
     private val viewModel: MainViewModel by activityViewModels()
+
+    private var currentLatitude = DEFAULT_LATITUDE
+    private var currentLongitude = DEFAULT_LONGITUDE
     private val gpsListener = GPSListener()
     private val locationManager: LocationManager by lazy {
         requireContext().getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -99,6 +104,7 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
 
 
     override fun initView() {
+        binding.clLocationSearchCurrentPos.isEnabled = false
         gpsListener.onReceiveLocation = this::recieveLocation
         if (!isEnableLocationSensor()) {
             enableLocationSensorSettings()
@@ -142,6 +148,11 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.queryFlow.value = ""
+    }
+
     private fun onClickOfLocationItem(item: LocationSearchResponse.Document) {
         Log.i(TAG, "onClickOfLocationItem : $item ")
         binding.let { context?.controlSoftKeyboard(it.root, false) }
@@ -151,6 +162,16 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
                 putString(BundleKey.LOCATION_Y.name, item.y)
                 putString(BundleKey.LOCATION_X.name, item.x)
                 putString(BundleKey.LOCATION_NAME.name, item.address_name)
+            })
+    }
+
+    fun onClickOfCurrentPosition(){
+        binding.let { context?.controlSoftKeyboard(it.root, false) }
+        moveFragment(
+            R.id.action_locationSearchFragment_to_mapBoundFragment,
+            bundle = Bundle().apply {
+                putString(BundleKey.LOCATION_Y.name, currentLatitude.toString())
+                putString(BundleKey.LOCATION_X.name, currentLongitude.toString())
             })
     }
 
@@ -164,5 +185,8 @@ class LocationSearchFragment : ViewBindingFragment<FragmentLocationSearchBinding
 
     private fun recieveLocation(location: Location) {
         Log.e(TAG, "${location.latitude} / ${location.longitude}")
+        currentLatitude = location.latitude
+        currentLongitude = location.longitude
+        binding.clLocationSearchCurrentPos.isEnabled = true
     }
 }
