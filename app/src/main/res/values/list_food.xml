@@ -10,35 +10,22 @@
         <item>돼지갈비</item>
         <item>족발</item>
         <item>보쌈</item>
-        <item>돼지갈비</item>
-        <item>족발</item>
-        <item>보쌈</item>
-        <item>돼지갈비</item>
-        <item>족발</item>
-        <item>보쌈</item>
-    </string-array>
-    <string-array name="japaneseFood">
-        <item>돼지갈비</item>
-        <item>족발</item>
-        <item>보쌈</item>
-        <item>돼지갈비</item>
-        <item>족발</item>
-        <item>보쌈</item>
-        <item>돼지갈비</item>
-        <item>족발</item>
-        <item>보쌈</item>
-        <item>돼지갈비</item>
-        <item>족발</item>
-        <item>보쌈</item>
-    </string-array>
-    <string-array name="chineseFood">
-        <item>돼지갈비</item>
-        <item>족발</item>
-        <item>보쌈</item>
     </string-array>
     <string-array name="americanFood">
-        <item>돼지갈비</item>
-        <item>족발</item>
-        <item>보쌈</item>
+        <item>햄버거</item>
+        <item>피자</item>
+        <item>치킨</item>
+    </string-array>
+
+    <string-array name="chineseFood">
+        <item>짜장면</item>
+        <item>짬뽕</item>
+        <item>탕수육</item>
+    </string-array>
+    <string-array name="japaneseFood">
+        <item>초밥</item>
+        <item>라멘</item>
+        <item>돈까스</item>
+        <item>우동</item>
     </string-array>
 </resources>

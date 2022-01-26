@@ -1,9 +1,10 @@
 package com.jdm.menunenaw.ui.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources.getColorStateList
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,12 +16,6 @@ import com.jdm.menunenaw.data.model.FoodCategory
 import com.jdm.menunenaw.databinding.ItemFoodMainCategoryBinding
 import com.jdm.menunenaw.utils.DiffUtilCallback
 import com.jdm.menunenaw.R
-
-import com.google.android.material.chip.ChipDrawable
-
-
-
-
 
 class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter.FoodLargeCategoryViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodLargeCategoryViewHolder {
@@ -49,22 +44,38 @@ class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter
                     }
                 }
                 tvTitle.text = data.mainCategoryTitle
+                tvCount.apply {
+                    text = resources.getString(R.string.select_count_text, currentList[bindingAdapterPosition].selectedList?.count { it })
+                }
                 imgPhoto.run {
                     Glide.with(context)
                         .load(R.drawable.korea)
                         .transform(CenterCrop(), RoundedCorners(10))
                         .into(this)
                 }
+                cbTotal.setOnCheckedChangeListener { view, isChecked ->
+                    when {
+                        view.isPressed -> {
+                            chipGroupSubCategory.forEach {
+                                (it as Chip).isChecked = isChecked
+                            }
+                        }
+                    }
+                }
                 chipGroupSubCategory.let { group ->
-                    data.subCategoryList.forEach {
+                    data.subCategoryList.forEachIndexed { index, item ->
                         val newChip = Chip(group.context).apply {
-                            text = it
+                            text = item
                             isClickable = true
                             isCheckable = true
                             checkedIcon = null
-                            isChecked = true // 초기값 체크 상태로
+                            isChecked = data.selectedList?.get(index) ?: true
                             setChipBackgroundColorResource(R.drawable.chip_bg_states)
-                            setOnCheckedChangeListener { buttonView, isChecked ->
+                            setOnCheckedChangeListener { _, isChecked ->
+                                currentList[bindingAdapterPosition].selectedList?.set(index, isChecked)
+                                val currentSelectCount = currentList[bindingAdapterPosition].selectedList?.count { it }
+                                tvCount.text = resources.getString(R.string.select_count_text, currentSelectCount)
+                                cbTotal.isChecked = currentSelectCount == currentList[bindingAdapterPosition].selectedList?.size
                             }
                         }
                         group.addView(newChip)

@@ -36,5 +36,7 @@
     <string name="american_food">양식</string>
     <string name="chinese_food">중식</string>
 
+    <string name="select_count_text">%d개</string>
+
     <string name="store_select_guid_message">돌림판에 추가할\n음식점을 골라주세요</string>
 </resources>
