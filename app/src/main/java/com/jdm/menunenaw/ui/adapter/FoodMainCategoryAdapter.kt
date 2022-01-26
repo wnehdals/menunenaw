@@ -1,7 +1,12 @@
 package com.jdm.menunenaw.ui.adapter
 
+import android.animation.ObjectAnimator
+import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.forEach
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -13,7 +18,6 @@ import com.jdm.menunenaw.data.model.FoodCategory
 import com.jdm.menunenaw.databinding.ItemFoodMainCategoryBinding
 import com.jdm.menunenaw.utils.DiffUtilCallback
 import com.jdm.menunenaw.R
-
 
 class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter.FoodLargeCategoryViewHolder>(diffUtil) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FoodLargeCategoryViewHolder {
@@ -30,24 +34,55 @@ class FoodMainCategoryAdapter: ListAdapter<FoodCategory, FoodMainCategoryAdapter
     }
 
     inner class FoodLargeCategoryViewHolder(private val binding : ItemFoodMainCategoryBinding) : RecyclerView.ViewHolder(binding.root){
+        @SuppressLint("ResourceType")
         fun bind(data : FoodCategory) {
-            binding.root.setOnClickListener {
-                it.isSelected = !it.isSelected
-                binding.isSelected = it.isSelected
-            }
-            binding.tvTitle.text = data.mainCategoryTitle
-            binding.imgPhoto.run {
-                Glide.with(context)
-                    .load(R.drawable.korea)
-                    .transform(CenterCrop(), RoundedCorners(10))
-                    .into(this)
-            }
-            binding.chipGroupSubCategory.let { group ->
-                data.subCategoryList.forEach {
-                    val newChip = Chip(group.context).apply {
-                        text = it
+            binding.run {
+                clAlways.setOnClickListener {
+                    it.isSelected = !it.isSelected
+                    if (it.isSelected) {
+                        mlCategory.transitionToEnd()
+                    } else {
+                        mlCategory.transitionToStart()
                     }
-                    group.addView(newChip)
+                    ObjectAnimator.ofFloat(ivArrow, View.ROTATION, if (it.isSelected) 0f else 180f, if (it.isSelected) 180f else 0f).setDuration(200).start();
+                }
+                tvTitle.text = data.mainCategoryTitle
+                tvCount.apply {
+                    text = resources.getString(R.string.select_count_text, currentList[bindingAdapterPosition].selectedList?.count { it })
+                }
+                imgPhoto.run {
+                    Glide.with(context)
+                        .load(R.drawable.korea)
+                        .transform(CenterCrop(), RoundedCorners(10))
+                        .into(this)
+                }
+                cbTotal.setOnCheckedChangeListener { view, isChecked ->
+                    when {
+                        view.isPressed -> {
+                            chipGroupSubCategory.forEach {
+                                (it as Chip).isChecked = isChecked
+                            }
+                        }
+                    }
+                }
+                chipGroupSubCategory.let { group ->
+                    data.subCategoryList.forEachIndexed { index, item ->
+                        val newChip = Chip(group.context).apply {
+                            text = item
+                            isClickable = true
+                            isCheckable = true
+                            checkedIcon = null
+                            isChecked = data.selectedList?.get(index) ?: true
+                            setChipBackgroundColorResource(R.drawable.chip_bg_states)
+                            setOnCheckedChangeListener { _, isChecked ->
+                                currentList[bindingAdapterPosition].selectedList?.set(index, isChecked)
+                                val currentSelectCount = currentList[bindingAdapterPosition].selectedList?.count { it }
+                                tvCount.text = resources.getString(R.string.select_count_text, currentSelectCount)
+                                cbTotal.isChecked = currentSelectCount == currentList[bindingAdapterPosition].selectedList?.size
+                            }
+                        }
+                        group.addView(newChip)
+                    }
                 }
             }
         }

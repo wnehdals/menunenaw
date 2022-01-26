@@ -4,6 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.category.FoodMainCategoryFragment">
 
+    <data>
+        <variable
+            name="fragment"
+            type="com.jdm.menunenaw.ui.category.FoodMainCategoryFragment" />
+    </data>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -94,15 +100,16 @@
             android:layout_width="25dp"
             android:layout_marginStart="20dp"
             android:layout_height="?attr/actionBarSize"
+            android:onClick="@{() -> fragment.onClickBackButton()}"
             android:src="@drawable/ic_chevron_left" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_food_main_category"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/dp_80"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            android:layout_height="match_parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:paddingBottom="@dimen/dp_80"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -111,9 +118,10 @@
             android:background="@color/white">
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/button3"
+                android:id="@+id/btn_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:onClick="@{() -> fragment.onClickNext()}"
                 android:layout_marginHorizontal="@dimen/dp_24"
                 android:layout_marginVertical="@dimen/dp_10"
                 android:background="@drawable/rect_radius_16_fea0a0"
