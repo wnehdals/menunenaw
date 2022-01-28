@@ -2,6 +2,7 @@ package com.jdm.menunenaw.utils
 
 import android.content.Context
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
