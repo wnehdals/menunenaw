@@ -1,6 +1,7 @@
 package com.jdm.menunenaw.data.remote
 
 import com.jdm.menunenaw.data.remote.response.CategorySearchResponse
+import com.jdm.menunenaw.data.remote.response.KeywordResponse
 import com.jdm.menunenaw.data.remote.response.LocationInfoResponse
 import com.jdm.menunenaw.data.remote.response.LocationSearchResponse
 import retrofit2.http.GET
@@ -22,6 +23,19 @@ interface KaKaoApi {
         @Query("size") size: Int = 20,
         @Query("analyze_type") type: String = "similar"
     ) : LocationSearchResponse
+
+    /** 키워드 검색
+     * @param query : 검색을 원하는 질의어
+     * @param page : 결과 페이지 번호, 1-45 사이, 기본 값 1
+     * @param size : 한 페이지에 보여질 문서의 개수, 1-15 사이, 기본 값 15
+     * 참고 url : https://developers.kakao.com/tool/rest-api/open/get/v2-local-search-keyword.%7Bformat%7D
+     * */
+    @GET("/v2/local/search/keyword.json")
+    suspend fun getSearchKeyword(
+        @Query("query") query: String,
+        @Query("page") page: Int = 1,
+        @Query("size") size: Int = 15
+        ) : KeywordResponse
 
     /** 좌표로 주소 정보 가져오기
      * @param latitude(y) 위도
@@ -57,4 +71,5 @@ interface KaKaoApi {
         @Query("size") size: Int = 15,
         @Query("sort") sort: String = "accuracy"
     ): CategorySearchResponse
+
 }
